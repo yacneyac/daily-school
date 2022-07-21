@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DECIMAL, DATETIME, ForeignKey
+from sqlalchemy import Column, Integer, String, BOOLEAN, DATETIME, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
@@ -11,6 +11,8 @@ class Teacher(Base):
     last_name = Column(String(256), index=True, nullable=False)
 
     hashed_password = Column(String, nullable=False)
+    # is_active = Column(BOOLEAN)
+    # is_online = Column(BOOLEAN)
 
     date_of_birth = Column(DATETIME(), nullable=False)
     # sex = Column(String(10), ForeignKey('sex.id'), nullable=False)
@@ -25,5 +27,7 @@ class Teacher(Base):
     phone = Column(String(256), nullable=True)
     home_phone = Column(String(256), nullable=True)
 
-    group_id = Column(String(10), ForeignKey('group.id'), nullable=True)
-    group = relationship('Group', back_populates='teachers')
+    created_ts = Column(DATETIME(), nullable=False)
+
+    # group_id = Column(String(10), ForeignKey('group2teacher.id'), nullable=True)
+    # group = relationship('Group', back_populates='teachers')

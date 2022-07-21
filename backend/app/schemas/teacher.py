@@ -4,17 +4,6 @@ from typing import List, Optional, Any
 from app.schemas.person import Person
 
 
-# class TeacherBase(Person):
-#     pass
-#
-#
-# class TeacherInDBBase(TeacherBase):
-#     id: int
-#     group_id: int
-#
-#     class Config:
-#         orm_mode = True
-
 # Shared properties
 class TeacherBase(Person):
     # start_work: int
@@ -45,6 +34,8 @@ class TeacherUpdate(TeacherBase):
     date_of_birth: Optional[int] = None  # datetime
 
     password: Optional[str] = ''
+
+    group_id: Optional[int] = None
 
     # phone: Optional[str] = ''
     # home_phone: Optional[str] = ''

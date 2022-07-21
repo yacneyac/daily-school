@@ -22,5 +22,6 @@ class Student(Base):
     phone = Column(String(256), nullable=True)
     home_phone = Column(String(256), nullable=True)
 
-    group_id = Column(String(10), ForeignKey('group.id'), nullable=False)
-    group = relationship('Group', back_populates='students')
+    # group_id = Column(String(10), ForeignKey('group.id'), nullable=False)
+    # group = relationship('Group', back_populates='students')
+    created_ts = Column(DATETIME(), nullable=False)

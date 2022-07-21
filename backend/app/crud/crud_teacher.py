@@ -17,7 +17,8 @@ class CRUDTeacher(CRUDBase[Teacher, TeacherCreate, TeacherUpdate]):
             date_of_birth=datetime.fromtimestamp(obj_in.date_of_birth).date(),
             address=obj_in.address,
             email=obj_in.email,
-            phone=obj_in.phone
+            phone=obj_in.phone,
+            created_ts=datetime.now()
         )
         db.add(db_obj)
         db.commit()

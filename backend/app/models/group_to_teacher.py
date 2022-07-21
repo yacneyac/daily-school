@@ -1,15 +1,18 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DATETIME
+from sqlalchemy import Column, Integer, UniqueConstraint, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
 
 
-class Group(Base):
+# many to many
+class Group2Teacher(Base):
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(256), nullable=False, unique=True)
-    owner_id = Column(Integer(), ForeignKey('teacher.id'), nullable=False)
+    group_id = Column(Integer(), ForeignKey('group.id'), nullable=False)
+    teacher_id = Column(Integer(), ForeignKey('teacher.id'), nullable=False)
 
-    created_ts = Column(DATETIME(), nullable=False)
+    UniqueConstraint(group_id, teacher_id, name='unique_gt')
+
+
     # teachers = relationship(
     #     'Teacher',
     #     back_populates='group',
