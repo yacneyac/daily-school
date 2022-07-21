@@ -10,6 +10,8 @@ class Teacher(Base):
     last_name = Column(String(256), index=True, nullable=False)
     second_name = Column(String(256), nullable=False)
 
+    hashed_password = Column(String, nullable=False)
+
     age = Column(Integer(), nullable=False)
     # sex = Column(String(10), ForeignKey('sex.id'), nullable=False)
 

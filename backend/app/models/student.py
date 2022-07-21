@@ -10,6 +10,8 @@ class Student(Base):
     middle_name = Column(String(256), index=True, nullable=False)
     last_name = Column(String(256), nullable=False)
 
+    hashed_password = Column(String, nullable=False)
+
     age = Column(Integer(), nullable=False)
     # sex = Column(String(10), ForeignKey("sex.id"), nullable=False)
     average_mark = Column(DECIMAL(), nullable=False)
