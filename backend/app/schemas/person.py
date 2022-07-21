@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Any
 
 
 class PersonSex(str, Enum):
@@ -13,7 +13,7 @@ class Person(BaseModel):
     middle_name: str
     last_name: str
 
-    age: int
+    date_of_birth: Any  # datetime
     # sex: PersonSex
 
     address: Optional[str]

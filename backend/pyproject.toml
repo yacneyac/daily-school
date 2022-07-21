@@ -10,7 +10,7 @@ fastapi = "^0.79.0"
 SQLAlchemy = "^1.4.39"
 tenacity = "^8.0.1"
 uvicorn = "^0.18.2"
-pydantic = "^1.9.1"
+pydantic = {extras = ["email"], version = "^1.9.1"}
 alembic = "^1.8.1"
 pkginfo = "^1.8.3"
 uvloop = "^0.16.0"

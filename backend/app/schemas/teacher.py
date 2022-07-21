@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
-from typing import List, Optional
+from typing import List, Optional, Any
 
-from backend.schemas import Person
+from app.schemas.person import Person
 
 
 # class TeacherBase(Person):
@@ -26,7 +26,9 @@ class TeacherCreate(TeacherBase):
     first_name: str
     middle_name: str
     last_name: str
-    age: int
+    date_of_birth: Any  # datetime
+
+    password: str
 
     phone: Optional[str] = ''
     home_phone: Optional[str] = ''
@@ -40,11 +42,13 @@ class TeacherUpdate(TeacherBase):
     first_name: Optional[str] = ''
     middle_name: Optional[str] = ''
     last_name: Optional[str] = ''
-    age: Optional[int] = 8
+    date_of_birth: Optional[int] = None  # datetime
 
-    phone: Optional[str] = ''
-    home_phone: Optional[str] = ''
-    email: Optional[EmailStr] = ''
+    password: Optional[str] = ''
+
+    # phone: Optional[str] = ''
+    # home_phone: Optional[str] = ''
+    # email: Optional[EmailStr] = ''
 
 
 class TeacherInDBBase(TeacherBase):
@@ -57,7 +61,7 @@ class TeacherInDBBase(TeacherBase):
 
 # Additional properties to return via API
 class Teacher(TeacherInDBBase):
-    pass
+    group_id: Optional[int]
 
 
 # Additional properties stored in DB

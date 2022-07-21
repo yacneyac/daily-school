@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-from backend.schemas import Student, Teacher
+from app.schemas import Student, Teacher
 
 
 class GroupBase(BaseModel):

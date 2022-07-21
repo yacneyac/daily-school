@@ -1,12 +1,12 @@
 import decimal
 from typing import List, Optional
 from pydantic import BaseModel, EmailStr
-from backend.schemas import Person
+from app.schemas.person import Person
 
 
 # Shared properties
 class StudentBase(Person):
-    average_mark: decimal
+    average_mark: decimal.Decimal
     # parents: List[Person]
 
 
@@ -15,7 +15,7 @@ class StudentCreate(StudentBase):
     first_name: str
     middle_name: str
     last_name: str
-    age: int
+    date_of_birth: int  # datetime
 
     phone: Optional[str] = ''
     home_phone: Optional[str] = ''
@@ -29,7 +29,9 @@ class StudentUpdate(StudentBase):
     first_name: Optional[str] = ''
     middle_name: Optional[str] = ''
     last_name: Optional[str] = ''
-    age: Optional[int] = 8
+
+    # TODO: check
+    # date_of_birth: Optional[int] = None
 
     phone: Optional[str] = ''
     home_phone: Optional[str] = ''
