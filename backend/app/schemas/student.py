@@ -1,11 +1,11 @@
 import decimal
 from typing import List, Optional
 from pydantic import BaseModel, EmailStr
-from app.schemas.person import Person
+from app.schemas.user import User
 
 
 # Shared properties
-class StudentBase(Person):
+class StudentBase(User):
     average_mark: decimal.Decimal
     # parents: List[Person]
 

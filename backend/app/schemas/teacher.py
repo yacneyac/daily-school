@@ -1,29 +1,19 @@
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional, Any
 
-from app.schemas.person import Person
+from app.schemas.user import User
 
 
 # Shared properties
-class TeacherBase(Person):
+class TeacherBase(User):
     # start_work: int
     pass
 
 
 # Properties to receive via API on creation
 class TeacherCreate(TeacherBase):
-    first_name: str
-    middle_name: str
-    last_name: str
-    date_of_birth: Any  # datetime
-
     password: str
-
-    phone: Optional[str] = ''
-    home_phone: Optional[str] = ''
-    email: Optional[EmailStr] = ''
-
-    # group_id: int
+    email: EmailStr
 
 
 # Properties to receive via API on update
@@ -44,7 +34,7 @@ class TeacherUpdate(TeacherBase):
 
 class TeacherInDBBase(TeacherBase):
     id: int
-    group_id: int
+    # group_id: int
 
     class Config:
         orm_mode = True
@@ -52,7 +42,7 @@ class TeacherInDBBase(TeacherBase):
 
 # Additional properties to return via API
 class Teacher(TeacherInDBBase):
-    group_id: Optional[int]
+    pass
 
 
 # Additional properties stored in DB

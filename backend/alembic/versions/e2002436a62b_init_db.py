@@ -1,8 +1,8 @@
 """init DB
 
-Revision ID: ed865631c4eb
+Revision ID: e2002436a62b
 Revises: 
-Create Date: 2022-07-21 18:11:20.041171
+Create Date: 2022-08-02 18:14:21.191422
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ed865631c4eb'
+revision = 'e2002436a62b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -41,14 +41,14 @@ def upgrade() -> None:
     sa.Column('middle_name', sa.String(length=256), nullable=False),
     sa.Column('last_name', sa.String(length=256), nullable=False),
     sa.Column('hashed_password', sa.String(), nullable=False),
-    sa.Column('date_of_birth', sa.DATETIME(), nullable=False),
-    sa.Column('start_work', sa.DATETIME(), nullable=True),
-    sa.Column('end_work', sa.DATETIME(), nullable=True),
+    sa.Column('date_of_birth', sa.Integer(), nullable=False),
+    sa.Column('start_work', sa.Integer(), nullable=True),
+    sa.Column('end_work', sa.Integer(), nullable=True),
     sa.Column('address', sa.String(length=256), nullable=True),
     sa.Column('email', sa.String(length=256), nullable=True),
     sa.Column('phone', sa.String(length=256), nullable=True),
     sa.Column('home_phone', sa.String(length=256), nullable=True),
-    sa.Column('created_ts', sa.DATETIME(), nullable=False),
+    sa.Column('created_ts', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_teacher_id'), 'teacher', ['id'], unique=False)

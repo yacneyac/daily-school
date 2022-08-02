@@ -1,27 +1,10 @@
 import React, { useState } from "react";
-import {
-  MDBNavbar,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBNavbarToggler,
-  MDBContainer,
-  MDBIcon,
-} from "mdb-react-ui-kit";
 
-import {
-  Container, 
-  Nav,
-  Navbar,
-  NavDropdown
-} from "react-bootstrap";
-
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 
 // import UserMenu from "./UserMenu";
 // import LoginBtn from "./Button/LoginBtn";
 // import Header from "./Header";
-
-
 
 function Home() {
   // const [data, setData] = useState({});
@@ -44,26 +27,10 @@ function Home() {
 
   return (
     <>
-        {/* <Header /> */}
-
-      <div className="p-5 text-center bg-light">
-        <h1 className="mb-3">Heading</h1>
-        <h4 className="mb-3">Subheading</h4>
-        {/* <a className='btn btn-primary' href='' role='button'> */}
-        {/* Call to action */}
-        {/* </a> */}
-      </div>
-
-      <p className="mt-4">Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-
-
+      {/* <Header /> */}
+      <main>
+        <h2>Home Page</h2>
+      </main>
     </>
   );
 }

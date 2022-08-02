@@ -11,6 +11,8 @@ header {
 main {
   grid-area: main;
   min-height: 88vh;
+  margin-left: 54px;
+  margin-right: 54px;
 }
 
 footer {
@@ -33,14 +35,7 @@ footer {
   box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%), 0 4px 20px 0 rgb(0 0 0 / 10%);
 }
 
-/* .modal-body {
-  border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
-  border-radius: var(--bs-modal-border-radius);
-} */
-
 .form-label {
   margin-bottom: 0.3rem;
   font-size: 15px;
 }
-
-
