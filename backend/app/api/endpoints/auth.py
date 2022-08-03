@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from app.schemas.user import CreateUser, User
 from app.schemas.teacher import Teacher
 from app.schemas.token import Token
-from app.core.auth import authenticate, create_access_token
+from app.core import auth
+# from app.core.auth import authenticate, create_access_token, create_refresh_token, refresh_token
 from app import deps, crud
 
 
@@ -33,19 +34,27 @@ async def create_user(*, user_in: CreateUser, db: Session = Depends(deps.get_db)
 
 @router.post('/signin', response_model=Token)
 async def login(db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()):
-    """ Log in user """
+    """ Authenticate user by email and generate access and refresh tokens """
 
-    user = authenticate(email=form_data.username, password=form_data.password, db=db)
+    user = auth.authenticate(email=form_data.username, password=form_data.password, db=db)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Incorrect username or password',
-            # headers={"WWW-Authenticate": "Bearer"},
+            headers={'WWW-Authenticate': 'Bearer'},
         )
 
     return {
-        "access_token": create_access_token(sub=user.email),
-        "token_type": "bearer",
+        'access_token': auth.create_access_token(sub=user.email),
+        'refresh_token': auth.create_refresh_token(sub=user.email),
+        'token_type': 'bearer',
+    }
+
+
+@router.get('/refresh-token')
+async def refresh_token(token: str = Depends(deps.oauth2_scheme)):
+    return {
+        'access_token': auth.refresh_token(token)
     }
 
 
