@@ -1,6 +1,7 @@
 import React from "react";
 
 function News() {
+  console.log('News')
     return (
       <>
         <main>

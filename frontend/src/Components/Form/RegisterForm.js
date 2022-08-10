@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { Form, Button } from "react-bootstrap";
 
 function RegisterForm(props) {
@@ -12,7 +12,7 @@ function RegisterForm(props) {
   const [code, setCode] = useState("");
   const [show, setShow] = useState(true)
 
-  const [err, setErr] = useState("");
+  // const [err, setErr] = useState("");
 
 
   const handleSubmit = (event) => {

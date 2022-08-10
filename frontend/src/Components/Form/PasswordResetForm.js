@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import PropsTypes from "prop-types";
 
-
-function PasswordResetForm(props) {
+function PasswordResetForm() {
   const [email, setEmail] = useState("");
 
   const handleSubmit = (event) => {
@@ -51,9 +49,5 @@ function PasswordResetForm(props) {
     </Form>
   );
 }
-
-PasswordResetForm.propsTypes = {
-  // formSwitcher: PropsTypes.func.isRequired,
-};
 
 export default PasswordResetForm;

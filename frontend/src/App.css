@@ -22,14 +22,14 @@ footer {
   color: white;
 }
 
-.btn {
+/* .btn {
   vertical-align: bottom;
   border: 0;
   font-weight: 500;
   padding: 0.625rem 1.5rem 0.5rem;
   font-size: .90rem;
   line-height: 1.5;
-}
+} */
 
 .btn:hover {
   box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%), 0 4px 20px 0 rgb(0 0 0 / 10%);
@@ -38,4 +38,29 @@ footer {
 .form-label {
   margin-bottom: 0.3rem;
   font-size: 15px;
+}
+
+.react-datepicker-wrapper {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+}
+
+.ds-date {
+  display: block;
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.ds-date:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
 }

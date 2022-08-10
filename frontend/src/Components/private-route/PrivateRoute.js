@@ -1,21 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Outlet, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess } from "../login/loginSlice";
+import { fetchNewAccessJWT } from "../../api/userApi";
 
-import LoginModal from "../Modal/LoginModal";
+// https://github.com/Chinwike1/redux-user-auth/blob/main/frontend/src/routing/ProtectedRoute.js
+function PrivateRoute() {
+  const { isAuth } = useSelector((state) => state.login);
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-// const isAuth = true;
+  console.log('PrivateRoute ', user, isAuth)
 
-function PrivateRoute({ isAllowed, redirectPath = "/login", children }) {
-  // console.log(children);
-  const [modalShow, setModalShow] = useState(false);
+  // automatically authenticate user if token is found
+  useEffect(() => {
+    const updateAccessJWT = async () => {
+      const result = await fetchNewAccessJWT();
+      result && dispatch(loginSuccess());
+    };
 
-  if (!isAllowed) {
-    // setModalShow(true)
-    // return <LoginModal show={modalShow} onHide={() => setModalShow(false)} />
-    return <Navigate to={redirectPath} replace />;
+    // updateAccessJWT();
+
+    // !user._id && dispatch(getUserProfile());
+
+    !sessionStorage.getItem("accessToken") &&
+      localStorage.getItem("dailySchool") &&
+      updateAccessJWT();
+
+    !isAuth &&
+      sessionStorage.getItem("accessToken") &&
+      dispatch(loginSuccess());
+
+    // if (!isAuth && sessionStorage.getItem("accessToken")) {
+    //   dispatch(loginSuccess());
+    // }
+  }, [isAuth, dispatch]);
+
+  if (!isAuth && !sessionStorage.getItem("accessToken")) {
+    console.log("REDIRECT to signin");
+    return <Navigate to="/signin" replace />;
   }
 
-  return children ? children : <Outlet />;
+  return <Outlet />;
 }
 
 export default PrivateRoute;

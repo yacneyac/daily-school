@@ -1,13 +1,32 @@
-import React from "react";
-import { Nav, Navbar, Container, Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Nav, Navbar, Container, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 
-import LoginBtn from "../Components/Button/LoginBtn";
-import UserMenu from "../Components/user/UserMenu";
+import LoginBtn from "../Components/login/LoginBtn";
+import { getUserProfile } from "../Components/user/userAction";
+import UserMenu from "../Components/user/userMenu";
 
-export const Header = ({ user }) => {
+export const Header = () => {
   // const isAuth = false;
+  const { isAuth } = useSelector((state) => state.login);
+  const {user, isLoading} = useSelector((state) => state.user);
+
+  // console.log('HEADER user ', user, !user)
+  const accessToken = sessionStorage.getItem("accessToken");
+  const dispatch = useDispatch()
+
+  console.log('HEADER -->', user, isLoading)
+
+    useEffect(() => {
+      if (!user.id && accessToken) {
+        console.log('RUN getUserProfile')
+        dispatch(getUserProfile())
+      }
+    }, [])
+
+
+
 
   return (
     <Navbar fixed="top" bg="light" expand="md">
@@ -22,9 +41,11 @@ export const Header = ({ user }) => {
             <LinkContainer to="about">
               <Nav.Link>About</Nav.Link>
             </LinkContainer>
+
+            
           </Nav>
           <Form className="d-flex">
-            <a
+            {/* <a
               href="/signin"
               style={{
                 textDecoration: "none",
@@ -36,10 +57,21 @@ export const Header = ({ user }) => {
             </a>
             <a href="/signup" style={{ textDecoration: "none", color: "gray" }}>
               Sign up
-            </a>
+            </a> */}
             {/* <Button variant="outline-link" href="/login">Sign in</Button> */}
+
+            {/* {user.id ? <UserMenu /> : <LoginBtn />} */}
+            {user.id && <UserMenu />}
+            {!isAuth && <LoginBtn />}
+
+            {/* {user ?
+            <LinkContainer to="/settings/profile">
+              <Nav.Link>Account settings</Nav.Link>
+            </LinkContainer>
+            : <LoginBtn />
+            } */}
+
           </Form>
-          {/* {user ? <UserMenu /> : <LoginBtn />} */}
         </Navbar.Collapse>
       </Container>
     </Navbar>

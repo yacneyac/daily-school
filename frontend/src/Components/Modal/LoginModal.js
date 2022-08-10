@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Modal from "react-bootstrap/Modal";
 
-import LoginForm from "../Form/LoginForm";
+import LoginForm from "../login/LoginForm";
 import PasswordResetForm from "../Form/PasswordResetForm";
 import RegisterForm from "../Form/RegisterForm";
 

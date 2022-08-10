@@ -10,15 +10,20 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    fetchUserLoading: (state) => {
+    getUserPending: (state) => {
       state.isLoading = true;
     },
-    fetchUserSuccess: (state, action) => {
+    getUserSuccess: (state, action) => {
       state.user = action.payload;
       state.isLoading = false;
+      state.error = "";
     },
-    fetchUserFail: (state, action) => {
+    getUserFail: (state, action) => {
       state.error = action.payload;
+      state.isLoading = false;
+    },
+    logOutUser: (state) => {
+      state.user = {};
       state.isLoading = false;
     },
   },
@@ -26,6 +31,6 @@ const userSlice = createSlice({
 
 const { reducer, actions } = userSlice;
 
-export const { fetchUserLoading, fetchUserSuccess, fetchUserFail } = actions;
+export const { getUserPending, getUserSuccess, getUserFail, logOutUser } = actions;
 
 export default reducer;
