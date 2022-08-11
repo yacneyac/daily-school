@@ -15,6 +15,7 @@ export const getUserProfile = () => async (dispatch) => {
 
     dispatch(getUserFail("User not found!"));
   } catch (error) {
+    console.log('ERR getUserProfile: ', error)
     dispatch(getUserFail(error));
     // if (error.code === "ERR_NETWORK") {
     // dispatch(getUserFail(error.message));

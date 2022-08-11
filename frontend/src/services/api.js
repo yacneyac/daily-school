@@ -10,7 +10,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // console.log("CONFIG:", config);
     if (config.url === signinUrl) {
       return config;
@@ -28,23 +28,25 @@ instance.interceptors.request.use(
     if (accessToken) {
       config.headers["Authorization"] = "Bearer " + accessToken; // for Spring Boot back-end
       //   config.headers["x-access-token"] = token; // for Node.js Express back-end
+      return config;
     }
-    return config;
+    
   },
   (error) => {
     return Promise.reject(error);
   }
 );
 
+
 instance.interceptors.response.use(
-  (res) => {
+  async (res) => {
     return res;
   },
-  (err) => {
+  async (err) => {
     console.log("ERROR:", err);
 
     const originalConfig = err.config;
-    console.log(originalConfig)
+    console.log('CONFIG ->',originalConfig)
 
     if (originalConfig.url !== signinUrl && err.response) {
       // Access Token was expired
@@ -52,20 +54,23 @@ instance.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-          const rs = instance.post("/auth/refresh-token", {
+          console.log('SEND REFRESH TOKEN')
+          const rs = await instance.post("/auth/refresh-token", {
             refreshToken: TokenService.getLocalRefreshToken(),
           });
-
+          
+          console.log('response: ', rs)
           const { accessToken } = rs.data;
 
           TokenService.updateSessionAccessToken(accessToken);
           return instance(originalConfig);
         } catch (_error) {
+          console.log('REJECT1 ', _error)
           return Promise.reject(_error);
         }
       }
     }
-    console.log('REJECT!!!!!!!!!!!!!!!!')
+    console.log('REJECT2 ', err)
     return Promise.reject(err);
   }
 );

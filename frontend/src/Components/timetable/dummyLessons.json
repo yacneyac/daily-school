@@ -1,0 +1,142 @@
+{
+  "Monday": {
+    "id": 0,
+    "date": "2022-08-08",
+    "lessons": [
+      {
+        "id": 1,
+        "time": "09:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 2,
+        "time": "10:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 3,
+        "time": "11:00",
+        "subject": "English",
+        "room": "4",
+        "group": "3-B"
+      }
+    ]
+  },
+  "Tuesday": {
+    "id": 1,
+    "date": "2022-08-09",
+    "lessons": [
+      {
+        "id": 1,
+        "time": "09:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 2,
+        "time": "10:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 3,
+        "time": "11:00",
+        "subject": "English",
+        "room": "4",
+        "group": "3-B"
+      }
+    ]
+  },
+  "Wednesday": {
+    "id": 2,
+    "date": "2022-08-10",
+    "lessons": [
+      {
+        "id": 1,
+        "time": "09:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 2,
+        "time": "10:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 3,
+        "time": "11:00",
+        "subject": "English",
+        "room": "4",
+        "group": "3-B"
+      }
+    ]
+  },
+  "Thursday": {
+    "id": 3,
+    "date": "2022-08-11",
+    "lessons": [
+      {
+        "id": 1,
+        "time": "09:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 2,
+        "time": "10:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 3,
+        "time": "11:00",
+        "subject": "English",
+        "room": "4",
+        "group": "3-B"
+      }
+    ]
+  },
+  "Friday": {
+    "id": 4,
+    "date": "2022-08-12",
+    "lessons": [
+      {
+        "id": 1,
+        "time": "09:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 2,
+        "time": "10:00",
+        "subject": "Math",
+        "room": "4",
+        "group": "3-B"
+      },
+      {
+        "id": 3,
+        "time": "11:00",
+        "subject": "English",
+        "room": "4",
+        "group": "3-B"
+      }
+    ]
+  },
+  "Saturday": {
+    "id": 5,
+    "date": "2022-08-13",
+    "lessons": []
+  }
+}
