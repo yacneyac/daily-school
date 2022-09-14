@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["Cherniakov Iaroslav <yarcher@ukr.net>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.79.0"
+SQLAlchemy = "^1.4.39"
+tenacity = "^8.0.1"
+uvicorn = "^0.18.2"
+pydantic = {extras = ["email"], version = "^1.9.1"}
+alembic = "^1.8.1"
+pkginfo = "^1.8.3"
+uvloop = "^0.16.0"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-multipart = "^0.0.5"
+psycopg2-binary = "^2.9.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
