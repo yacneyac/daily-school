@@ -58,3 +58,7 @@ def __get_current_user(user, db, token):
         raise credentials_exception
 
     return user_in_db
+
+
+current_user = Depends(get_current_teacher)
+db_session = Depends(get_db)

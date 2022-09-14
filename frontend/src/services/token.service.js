@@ -19,9 +19,11 @@ const updateLocalRefreshToken = (token) => {
 
 const removeRefreshToken = () => {
   localStorage.removeItem("dailySchool");
+  console.log('removeRefreshToken')
 };
 const removeAccessToken = () => {
   sessionStorage.removeItem("accessToken");
+  console.log('removeAccessToken')
 };
 
 // const getUser = () => {

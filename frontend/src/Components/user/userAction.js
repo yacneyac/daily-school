@@ -1,4 +1,5 @@
 import { getUserPending, getUserSuccess, getUserFail } from "./userSlice";
+import { loginFail } from "../login/loginSlice";
 // import { fetchUserProfile } from "../../api/userApi";
 import UserService from "../../services/user.service";
 
@@ -16,7 +17,8 @@ export const getUserProfile = () => async (dispatch) => {
     dispatch(getUserFail("User not found!"));
   } catch (error) {
     console.log('ERR getUserProfile: ', error)
-    dispatch(getUserFail(error));
+    dispatch(getUserFail(error.message));
+    // dispatch(loginFail(error.message));
     // if (error.code === "ERR_NETWORK") {
     // dispatch(getUserFail(error.message));
     // } else {

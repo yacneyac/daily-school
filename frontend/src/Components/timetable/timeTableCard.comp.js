@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 
 const TimeTableCard = (props) => {
   function groupFormatter(cell, row) {
-    return <Link to={`/group/${row.group}`}>{row.group}</Link>;
+    return <Link to={`/group/${row.groupId}`}>{row.group}</Link>;
   }
 
   const columns = [

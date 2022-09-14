@@ -4,17 +4,18 @@ import "./Login.style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginPending, loginSuccess, loginFail } from "./loginSlice";
-// import { userLogin } from "../../api/userApi";
 import AuthService from "../../services/auth.service"
+
 
 function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.login);
+  const userState = useSelector((state) => state.user);
   // const accessToken = sessionStorage.getItem("accessToken");
 
-  const [email, setEmail] = useState("user@example.com");
-  const [password, setPassword] = useState("string");
+  const [email, setEmail] = useState("t@t.com");
+  const [password, setPassword] = useState("pass");
 
   useEffect(() => {
     if (sessionStorage.getItem("accessToken")) {
@@ -31,7 +32,13 @@ function LoginForm() {
 
     try {
       await AuthService.login(email, password);
-      // console.log("isAuth: ", isAuth);
+      // console.log("isAuth: ", auth);
+      // if (auth.access_token){
+      //   const user = dispatch(getUserProfile())
+      //   console.log('USER: ', user)
+      // }
+     
+      
       dispatch(loginSuccess());
 
       // dispatch(getUserProfile())
@@ -42,11 +49,12 @@ function LoginForm() {
       // navigate('/auth/user-home')
     } catch (error) {
       console.log("LOGIN FORM ERROR: ", error);
-      if (error.code === "ERR_NETWORK") {
-        dispatch(loginFail(error.message));
-      } else {
-        dispatch(loginFail(error.response.data.detail));
-      }
+      // if (error.code === "ERR_NETWORK") {
+      dispatch(loginFail(error.message));
+      // } else {
+        // console.log(JSON.stringify(error.message))
+        // dispatch(loginFail(error.message));
+      // }
     }
   };
 
@@ -59,7 +67,7 @@ function LoginForm() {
     >
       <h5 style={{ textAlign: "center" }}>Sign in to DailySchool</h5>
       <hr />
-      {error && <Alert variant="danger"> {error} </Alert>}
+      {(error || userState.error) && <Alert variant="danger"> {error} </Alert>}
       <Form.Group className="mb-3" controlId="formLoginEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control

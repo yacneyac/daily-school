@@ -14,10 +14,12 @@ import { useDispatch, useSelector } from "react-redux";
 import TimeTableCard from "../../timetable/timeTableCard.comp";
 import { fetchTimeTable } from "../../timetable/timeTableAction";
 import CreateLessonModal from "../../lesson/CreateLessonModal.comp";
+import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const [modalShow, setModalShow] = useState(false);
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   // const { isLoading } = useSelector((state) => state.timeTable);
   const accessToken = sessionStorage.getItem("accessToken");
   const dispatch = useDispatch();
@@ -25,11 +27,14 @@ const UserDashboard = () => {
   console.log("UserDashboard ", user);
 
   useEffect(() => {
-    if (accessToken) {
+    if (user.id && accessToken) {
       console.log("fetchTimeTable");
       dispatch(fetchTimeTable());
     }
-  }, [dispatch]);
+    // else{
+      // navigate("/signin");
+    // }
+  }, [user.id, dispatch]);
 
   return (
     <Container>

@@ -3,17 +3,16 @@ from sqlalchemy.orm import Session
 
 
 from app.crud.base import CRUDBase
-from app.models.group import Group
+from app.models.group import Group_
 from app.models.group_to_teacher import Group2Teacher
 from app.schemas.group import GroupCreate, GroupUpdate
 
 
-class CRUDGroup(CRUDBase[Group, GroupCreate, GroupUpdate]):
-    def create(self, db: Session, *, obj_in: GroupCreate) -> Group:
-        db_obj = Group(
+class CRUDGroup(CRUDBase[Group_, GroupCreate, GroupUpdate]):
+    def create(self, db: Session, *, obj_in: GroupCreate) -> Group_:
+        db_obj = Group_(
             name=obj_in.name,
             owner_id=obj_in.owner_id,
-            created_ts=datetime.now()
         )
         db.add(db_obj)
         db.commit()
@@ -30,4 +29,4 @@ class CRUDGroup(CRUDBase[Group, GroupCreate, GroupUpdate]):
         return db_obj
 
 
-group = CRUDGroup(Group)
+group = CRUDGroup(Group_)

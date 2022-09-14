@@ -1,18 +1,29 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
+import { lessonInit } from "./lessonSlice";
 import CreateLessonForm from "./CreateLessonForm.comp";
-import { useSelector } from "react-redux";
 
 const CreateLessonModal = (props) => {
-  const [show, setShow] = useState(false);
-  const { activeDay } = useSelector((state) => state.timeTable);
+  const dispatch = useDispatch();
+  // const [modalShow, setModalShow] = useState(props.show);
+  const { created } = useSelector((state) => state.lesson);
+  // created(pin):true
+
+  // useEffect(() => {
+  //   if (created) {
+  //     setModalShow(false)
+  //   }
+  // }, [created]);
 
   return (
     <>
       <Modal
         onHide={props.onHide}
+        onShow={() => {
+          dispatch(lessonInit());
+        }}
         show={props.show}
         size="sm"
         contentClassName="bg-light"
@@ -24,7 +35,5 @@ const CreateLessonModal = (props) => {
     </>
   );
 };
-
-CreateLessonModal.propTypes = {};
 
 export default CreateLessonModal;

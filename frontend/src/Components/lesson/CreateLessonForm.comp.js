@@ -1,114 +1,163 @@
-import React, { useState } from "react";
-import { Button, Form, InputGroup } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Form,
+  InputGroup,
+  Row,
+  Col,
+  Alert,
+  Stack,
+} from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addLesson } from "./lessonAction";
+import { lessonInit } from "./lessonSlice";
 
-const CreateLessonForm = (props) => {
-  // const { week } = useSelector((state) => state.timeTable);
+const CreateLessonForm = () => {
+  const { parameters } = useSelector((state) => state.timeTable);
+  const { isLoading, error, created } = useSelector((state) => state.lesson);
+  const dispatch = useDispatch();
+  const [disabled, setDisabled] = useState(true);
+  const navigate = useNavigate();
 
   const [fields, setFields] = useState({
-    time: "",
-    subject: "",
-    room: "",
-    group: "",
-    day: "",
+    time_id: parameters.time[0].id,
+    subject_id: parameters.subject[0].id,
+    room_id: parameters.room[0].id,
+    group_id: parameters.group[0].id,
+    day_id: {},
   });
 
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [lessonDate, setLessonDate] = useState();
+
+  useEffect(() => {
+    if (created) {
+      console.log("NAVIGATE TO ");
+      // dispatch(lessonInit());
+
+      // props.onHideModal(true)
+      window.location.reload();
+      // navigate("/dashboard");
+    }
+  }, [created]);
 
   function onChange(el) {
-    // const {name, value} = el[0]
-    // console.log(name, value)
-    const { name, value } = el.target;
+    var { name, value } = el.target;
+
+    if (el.target.className === "form-check-input") {
+      const newDays = fields[name];
+      newDays[el.target.id] = el.target.checked;
+
+      value = newDays;
+    }
 
     setFields((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-  }
 
-  console.log(fields);
-  console.log(selectedDay);
+    // diable Create button
+    const dayVal = Object.values(fields.day_id);
+    setDisabled(dayVal.every((el) => el === false));
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // event.stopPropagation();
 
-    // TODO: Call login API
-    console.log(event);
+    fields["date"] = "2022-09-09";
+    dispatch(addLesson(fields));
   };
-
-  // from table
-  const times = ["09:00", "10:00", "11:00"];
-  const subjects = ["Math", "English"];
-  const rooms = ["5", "4", "23"];
-  const groups = ["3-B", "3-A"];
 
   function makeOptions(optList) {
     return optList.map((opt, index) => {
       return (
-        <option key={index} name={opt} value={opt}>
-          {opt}
+        <option key={index} value={opt.id}>
+          {opt.name}
         </option>
       );
     });
   }
 
-  const optionsSelect = [
-    { value: 0, label: "Monday" },
-    { value: 1, label: "Tuesday" },
-    { value: 2, label: "Wednesday" },
-    { value: 3, label: "Thursday" },
-    { value: 4, label: "Friday" },
-    { value: 5, label: "Saturday" },
-  ];
+  function daySwitch(days) {
+    return days.map((dayName, index) => {
+      const day = parameters.week.filter((day) => day.name === dayName);
+      return (
+        <Form.Switch
+          key={index}
+          id={day[0].id}
+          name="day_id"
+          label={dayName}
+          onChange={onChange}
+        />
+      );
+    });
+  }
 
   return (
     <Form onSubmit={handleSubmit} autoComplete="off">
-      <h5>Add lesson</h5>
+      <h5 style={{ textAlign: "center" }}>Add lesson</h5>
       <hr />
+      {error && <Alert variant="danger"> {error} </Alert>}
+      <Row>
+        <Col>{daySwitch(["Monday", "Tuesday", "Wednesday"])}</Col>
+        <Col style={{ paddingBottom: "16px" }}>
+          {daySwitch(["Thursday", "Friday", "Saturday"])}
+        </Col>
+      </Row>
+
       <InputGroup size="sm" className="mb-3">
-        <InputGroup.Text id="inputGroupInput">Time</InputGroup.Text>
-        <Select
-          isMulti
-          components={makeAnimated()}
-          options={optionsSelect}
-          defaultValue={selectedDay}
-          onChange={setSelectedDay}
-          name="day"
+        <InputGroup.Text id="inputGroupInput">Date</InputGroup.Text>
+        <DatePicker
+        className="ds-date"
+          dateFormat="yyyy-MM-dd"
+          calendarStartDay={1}
+          selected={lessonDate}
+          name="date"
+          // card={props.cardName}
+          // value={lessonDate}
+          // style={{borderRadius: "0.375rem"}}
+          // minDate={new Date(props.minDate)}
+          // excludeDateIntervals={[{start: new Date("2021-12-10"), end: new Date("2021-12-20")}]}
+          // required={props.field.required}
+          // disabled={field.disabled}
+          onChange={(date) => setLessonDate(date)}
         />
       </InputGroup>
 
       <InputGroup size="sm" className="mb-3">
         <InputGroup.Text id="inputGroupInput">Time</InputGroup.Text>
-        <Form.Select value={fields.time} onChange={onChange} name="time">
-          {makeOptions(times)}
+        <Form.Select onChange={onChange} name="time_id">
+          {makeOptions(parameters.time)}
         </Form.Select>
       </InputGroup>
       <InputGroup size="sm" className="mb-3">
         <InputGroup.Text id="inputGroupInput">Subject</InputGroup.Text>
-        <Form.Select value={fields.subject} onChange={onChange} name="subject">
-          {makeOptions(subjects)}
+        <Form.Select onChange={onChange} name="subject_id">
+          {makeOptions(parameters.subject)}
         </Form.Select>
       </InputGroup>
       <InputGroup size="sm" className="mb-3">
         <InputGroup.Text id="inputGroupInput">Room</InputGroup.Text>
-        <Form.Select value={fields.room} onChange={onChange} name="room">
-          {makeOptions(rooms)}
+        <Form.Select onChange={onChange} name="room_id">
+          {makeOptions(parameters.room)}
         </Form.Select>
       </InputGroup>
       <InputGroup size="sm" className="mb-3">
         <InputGroup.Text id="inputGroupInput">Group</InputGroup.Text>
-        <Form.Select value={fields.group} onChange={onChange} name="group">
-          {makeOptions(groups)}
+        <Form.Select onChange={onChange} name="group_id">
+          {makeOptions(parameters.group)}
         </Form.Select>
       </InputGroup>
 
       <hr />
       <div className="d-grid gap-2">
-        <Button type="submit" variant="success">
-          Create
+        <Button
+          type="submit"
+          variant="success"
+          disabled={error || disabled || isLoading}
+        >
+          {isLoading ? "Loading…" : "Create"}
         </Button>
       </div>
     </Form>

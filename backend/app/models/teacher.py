@@ -8,7 +8,7 @@ class Teacher(Base):
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String(256), nullable=False)
     middle_name = Column(String(256), nullable=False)
-    last_name = Column(String(256), index=True, nullable=False)
+    last_name = Column(String(256), nullable=False)
 
     hashed_password = Column(String, nullable=False)
     # is_active = Column(BOOLEAN)

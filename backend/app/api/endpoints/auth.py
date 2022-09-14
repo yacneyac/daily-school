@@ -7,7 +7,6 @@ from app.schemas.user import CreateUser, User
 from app.schemas.teacher import Teacher
 from app.schemas.token import Token, AccessToken
 from app.core import auth
-# from app.core.auth import authenticate, create_access_token, create_refresh_token, refresh_token
 from app import deps, crud
 
 
@@ -15,7 +14,7 @@ router = APIRouter()
 
 
 @router.post('/signup', status_code=201, response_model=User)
-async def create_user(*, user_in: CreateUser, db: Session = Depends(deps.get_db)) -> dict:
+async def create_user(*, user_in: CreateUser, db: Session = deps.db_session) -> dict:
     """
     Create a new user in the database.
     """
@@ -32,8 +31,8 @@ async def create_user(*, user_in: CreateUser, db: Session = Depends(deps.get_db)
     return user
 
 
-@router.post('/signin', response_model=Token)
-async def login(db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()):
+@router.post('/signin', status_code=200, response_model=Token)
+async def login(db: Session = deps.db_session, form_data: OAuth2PasswordRequestForm = Depends()):
     """ Authenticate user by email and generate access and refresh tokens """
     print('RECIVE: ', form_data)
     user = auth.authenticate(email=form_data.username, password=form_data.password, db=db)
@@ -61,19 +60,18 @@ async def refresh_token(token: str = Depends(deps.oauth2_scheme)):
     }
 
 
-# test token
 @router.get('/user', response_model=Teacher)
 def read_users_me(current_user: Teacher = Depends(deps.get_current_teacher)):
     return current_user
 
 
-@router.get('/timetable')
-def read_users_me(current_user: Teacher = Depends(deps.get_current_teacher)):
-    return {
-        'history': 'history',
-        'info': 'info',
-        'nextLesson': 'next lesson'
-    }
+# @router.get('/timetable')
+# def read_users_me(current_user: Teacher = Depends(deps.get_current_teacher)):
+#     return {
+#         'history': 'history',
+#         'info': 'info',
+#         'nextLesson': 'next lesson'
+#     }
 
 
 @router.delete('/logout')

@@ -8,21 +8,24 @@
         "time": "09:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 2,
         "time": "10:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 3,
         "time": "11:00",
         "subject": "English",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       }
     ]
   },
@@ -35,21 +38,24 @@
         "time": "09:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 2,
         "time": "10:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 3,
         "time": "11:00",
         "subject": "English",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       }
     ]
   },
@@ -62,21 +68,24 @@
         "time": "09:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 2,
         "time": "10:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 3,
         "time": "11:00",
         "subject": "English",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       }
     ]
   },
@@ -89,21 +98,24 @@
         "time": "09:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 2,
         "time": "10:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 3,
         "time": "11:00",
         "subject": "English",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       }
     ]
   },
@@ -116,21 +128,24 @@
         "time": "09:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 2,
         "time": "10:00",
         "subject": "Math",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       },
       {
         "id": 3,
         "time": "11:00",
         "subject": "English",
         "room": "4",
-        "group": "3-B"
+        "group": "3-B",
+        "groupId": 1
       }
     ]
   },

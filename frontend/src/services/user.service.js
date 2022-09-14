@@ -15,7 +15,7 @@ async function fetchUserProfile() {
 
 async function getTimeTable() {
   return api
-    .get("/auth/timetable")
+    .get("/schedule")
     .then((response) => {
       return response.data;
     })

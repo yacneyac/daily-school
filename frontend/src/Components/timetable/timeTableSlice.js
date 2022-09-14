@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   week: {},
+  parameters: [],
   isLoading: false,
-  activeDay: "",
   error: "",
 };
 
@@ -13,11 +13,14 @@ const timeTableSlice = createSlice({
   reducers: {
     fetchTimeTableLoading: (state) => {
       state.isLoading = true;
-      // state.activeDay = "";
-
     },
     fetchTimeTableSuccess: (state, action) => {
       state.week = action.payload;
+      state.isLoading = false;
+      state.error = "";
+    },
+    fetchTimeTableParametersSuccess: (state, action) => {
+      state.parameters = action.payload;
       state.isLoading = false;
       state.error = "";
     },
@@ -25,9 +28,6 @@ const timeTableSlice = createSlice({
       state.week = {};
       state.error = action.payload;
       state.isLoading = false;
-    },
-    setTimeTableDay: (state, action) => {
-      state.activeDay = action.payload;
     },
   },
 });
@@ -37,8 +37,8 @@ const { reducer, actions } = timeTableSlice;
 export const {
   fetchTimeTableLoading,
   fetchTimeTableSuccess,
+  fetchTimeTableParametersSuccess,
   fetchTimeTableFail,
-  setTimeTableDay
 } = actions;
 
 export default reducer;

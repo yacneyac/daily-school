@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DECIMAL, ForeignKey, DATETIME
+from sqlalchemy import Column, Integer, String, DECIMAL, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
@@ -12,7 +12,7 @@ class Student(Base):
 
     hashed_password = Column(String, nullable=False)
 
-    date_of_birth = Column(DATETIME(), nullable=False)
+    date_of_birth = Column(Integer, nullable=False)
     # sex = Column(String(10), ForeignKey("sex.id"), nullable=False)
     average_mark = Column(DECIMAL(), nullable=False)
 
@@ -24,4 +24,4 @@ class Student(Base):
 
     # group_id = Column(String(10), ForeignKey('group.id'), nullable=False)
     # group = relationship('Group', back_populates='students')
-    created_ts = Column(DATETIME(), nullable=False)
+    created_ts = Column(Integer, nullable=False)

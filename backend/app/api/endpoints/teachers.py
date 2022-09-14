@@ -1,20 +1,39 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from sqlalchemy.orm import Session
 
-
-from app.schemas.teacher import Teacher, TeacherCreate
 from app import deps, crud
-# from app.core.config import settings
-# from app.utils import send_new_account_email
+
 
 router = APIRouter()
 
 
-@router.post('/teacher/', status_code=201, response_model=Teacher)
-def create_teacher(*, teacher_in: TeacherCreate, db: Session = Depends(deps.get_db)) -> dict:
-    """
-    Create a new teacher in the database.
-    """
-    teacher = crud.teacher.create(db=db, obj_in=teacher_in)
-    # print(teacher.date_of_birth)
-    return teacher
+@router.get('/', dependencies=[deps.current_user])
+def get_teachers(db: Session = deps.db_session):
+    return {
+        'teacher': crud.teacher.get_multi(db),
+    }
+
+
+# @router.post('/teacher/schedule', status_code=201, response_model=Schedule, dependencies=[deps.current_user])
+# def create_schedule(schedule_in: ScheduleCreate, db: Session = deps.db_session):
+#     """ Create a new schedule in the database. """
+#     try:
+#         schedule = crud.schedule.create(db=db, obj_in=schedule_in)
+#     except IntegrityError as err:
+#         print(err)
+#         raise HTTPException(
+#             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+#             detail='already exists')
+#
+#     return schedule
+#
+#
+# @router.get('/teacher/schedule/parameters')
+# def get_schedule_parameters(db: Session = deps.db_session):
+#     return {
+#         'room': crud.room.get_multi(db),
+#         'subject': crud.subject.get_multi(db),
+#         'time': crud.lesson_time.get_multi(db),
+#         'group': crud.group.get_multi(db),
+#         'week': crud.week.get_multi(db)
+#     }
