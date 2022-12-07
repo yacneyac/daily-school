@@ -9,6 +9,7 @@ import {
   Table,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import DatePicker from "react-datepicker";
 // import { getUserProfile } from "../userAction";
 // import BootstrapTable from "react-bootstrap-table-next";
 import TimeTableCard from "../../timetable/timeTableCard.comp";
@@ -18,11 +19,17 @@ import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const [modalShow, setModalShow] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
   // const { isLoading } = useSelector((state) => state.timeTable);
   const accessToken = sessionStorage.getItem("accessToken");
   const dispatch = useDispatch();
+
+  const isWeekday = (date) => {
+    const day = date.getDay();
+    return day !== 0
+  };
 
   console.log("UserDashboard ", user);
 
@@ -32,14 +39,14 @@ const UserDashboard = () => {
       dispatch(fetchTimeTable());
     }
     // else{
-      // navigate("/signin");
+    // navigate("/signin");
     // }
   }, [user.id, dispatch]);
 
   return (
     <Container>
       <div className="gap-5 d-md-flex justify-content-md-center">
-        <Pagination size="sm" style={{ marginLeft: "95px" }}>
+        {/* <Pagination size="sm" style={{ marginLeft: "95px" }}>
           <Pagination.First />
           <Pagination.Prev />
           <Pagination.Item>{1}</Pagination.Item>
@@ -55,7 +62,16 @@ const UserDashboard = () => {
           <Pagination.Item>{20}</Pagination.Item>
           <Pagination.Next />
           <Pagination.Last />
-        </Pagination>
+        </Pagination> */}
+        <DatePicker
+          dateFormat="yyyy-MM-dd"
+          calendarStartDay={1}
+          className="ds-date"
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          filterDate={isWeekday}
+          withPortal
+        />
         <Button
           variant="secondary"
           size="sm"
