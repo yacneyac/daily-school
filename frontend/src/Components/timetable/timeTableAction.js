@@ -15,7 +15,7 @@ export const fetchTimeTable = () => async (dispatch) => {
     const result = await ScheduleService.getSchedule();
     // result.data.result.length &&
     //
-    dispatch(fetchTimeTableSuccess(timeTables));
+    dispatch(fetchTimeTableSuccess(result));
     console.log("LOAD TIMETABLE TO REDUX");
 
 

@@ -1,10 +1,12 @@
-from fastapi import APIRouter, HTTPException, status
-from typing import List
+from fastapi import APIRouter, HTTPException, status, Path, Depends, Query
+from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime as dt, timedelta
+from collections import defaultdict
 
 
-
+from app import schemas, models
 from app.schemas.schedule import Schedule, ScheduleCreate
 from app import deps, crud
 
@@ -12,12 +14,18 @@ from app import deps, crud
 router = APIRouter()
 
 
+@router.post('/weeks', status_code=201)
+async def make_education_weeks(obj_in: schemas.WeekNumberCreate, db: Session = deps.db_session):
+    """ Generate the weeks numbers """
+    return crud.week_number.create(db, obj_in=obj_in)
+
+
 # @router.post('/lesson', status_code=201, response_model=Schedule, dependencies=[deps.current_user])
-@router.post('/lesson', status_code=201, response_model=List[Schedule])
-def create_lesson(schedule_in: ScheduleCreate, db: Session = deps.db_session):
+@router.post('/weeks/{week_number}/lesson', status_code=201)
+async def create_lesson(week_number: int, schedule_in: ScheduleCreate, db: Session = deps.db_session):
     """ Create a new lesson in schedule """
     try:
-        schedule = crud.schedule.create(db=db, obj_in=schedule_in)
+        schedule = crud.schedule.create(db=db, week_number=week_number, obj_in=schedule_in)
     except IntegrityError as err:
 
         print(f'IntegrityError: "{err}"')
@@ -29,14 +37,37 @@ def create_lesson(schedule_in: ScheduleCreate, db: Session = deps.db_session):
     return schedule
 
 
-@router.get('/', dependencies=[deps.current_user])
-def get_schedule(db: Session = deps.db_session):
-    # TODO: get number week.
-    return {
-        'schedule': crud.schedule.get_multi(db),
-        'info': 'info',
-        'nextLesson': 'next lesson'
-    }
+# @router.get('/', dependencies=[deps.current_user])
+@router.get('/weeks')
+@router.get('/weeks/{week_number}')
+async def get_schedule(week_number: Optional[int] = None, db: Session = deps.db_session):
+
+    # load today week
+    schedule = defaultdict(dict)
+    if week_number is None:
+        # TODO: get education week number by today
+        week_number = dt.now().isocalendar().week
+
+    week = db.query(models.WeekNumber). \
+        filter(models.WeekNumber.number == week_number). \
+        first()
+
+    week_days = [(dt.fromtimestamp(week.start_ts) + timedelta(days=day)) for day in range(0, 6)]
+    week_schedule = crud.schedule.get_multi(db, week_number=week_number)
+
+    for week_day in week_days:
+        day_name = week_day.strftime("%A")
+        schedule[day_name] = {
+            'date': str(week_day.date()),
+            'lessons': [lesson for lesson in week_schedule if lesson['day'] == day_name]
+        }
+
+    for day, param in schedule.items():
+        for index, lesson in enumerate(param['lessons'], start=1):
+            lesson['id'] = index
+            del lesson['day']
+
+    return schedule
 
 
 @router.get('/parameters', dependencies=[deps.current_user])

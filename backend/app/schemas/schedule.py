@@ -4,22 +4,21 @@ from typing import List, Optional, Any
 
 # Shared properties
 class ScheduleBase(BaseModel):
-    day_id: int
+    day_id: int  # Monday, Thursday
     subject_id: int
     room_id: int
     group_id: int
     time_id: int
-    date: str
 
 
 # Properties to receive via API on creation
 class ScheduleCreate(ScheduleBase):
-    day_id: dict
+    day_id: dict  # {"5":true}
 
 
 # Properties to receive via API on update
 class ScheduleUpdate(ScheduleBase):
-    date: Optional[int] = None
+    date: Optional[str] = None
 
 
 class ScheduleInDBBase(ScheduleBase):
@@ -31,7 +30,7 @@ class ScheduleInDBBase(ScheduleBase):
 
 # Additional properties to return via API
 class Schedule(ScheduleInDBBase):
-    pass
+    week_number: int
 
 
 # Additional properties stored in DB

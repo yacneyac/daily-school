@@ -8,3 +8,5 @@ from .student import Student
 from .subject import Subject
 from .teacher import Teacher
 from .week import Week
+from .week_number import WeekNumber
+

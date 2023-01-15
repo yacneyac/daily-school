@@ -5,21 +5,20 @@ import {
   InputGroup,
   Row,
   Col,
-  Alert,
-  Stack,
+  Alert
 } from "react-bootstrap";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { addLesson } from "./lessonAction";
-import { lessonInit } from "./lessonSlice";
+// import { lessonInit } from "./lessonSlice";
 
 const CreateLessonForm = () => {
   const { parameters } = useSelector((state) => state.timeTable);
   const { isLoading, error, created } = useSelector((state) => state.lesson);
   const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(true);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [fields, setFields] = useState({
     time_id: parameters.time[0].id,
@@ -29,16 +28,18 @@ const CreateLessonForm = () => {
     day_id: {},
   });
 
-  const [lessonDate, setLessonDate] = useState();
+  // const [lessonDate, setLessonDate] = useState();
 
+  // const isWeekday = (date) => {
+  //   const day = date.getDay();
+  //   return day !== 0
+  // };
+
+
+  // reload page if lesson is created 
   useEffect(() => {
     if (created) {
-      console.log("NAVIGATE TO ");
-      // dispatch(lessonInit());
-
-      // props.onHideModal(true)
       window.location.reload();
-      // navigate("/dashboard");
     }
   }, [created]);
 
@@ -64,8 +65,6 @@ const CreateLessonForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    fields["date"] = "2022-09-09";
     dispatch(addLesson(fields));
   };
 
@@ -81,11 +80,11 @@ const CreateLessonForm = () => {
 
   function daySwitch(days) {
     return days.map((dayName, index) => {
-      const day = parameters.week.filter((day) => day.name === dayName);
+      // const day = parameters.week.filter((day) => day.name === dayName);
       return (
         <Form.Switch
           key={index}
-          id={day[0].id}
+          // id={day[0].id}
           name="day_id"
           label={dayName}
           onChange={onChange}
@@ -106,11 +105,12 @@ const CreateLessonForm = () => {
         </Col>
       </Row>
 
-      <InputGroup size="sm" className="mb-3">
+      {/* <InputGroup size="sm" className="mb-3">
         <InputGroup.Text id="inputGroupInput">Date</InputGroup.Text>
         <DatePicker
         className="ds-date"
           dateFormat="yyyy-MM-dd"
+          showWeekNumbers
           calendarStartDay={1}
           selected={lessonDate}
           name="date"
@@ -122,8 +122,9 @@ const CreateLessonForm = () => {
           // required={props.field.required}
           // disabled={field.disabled}
           onChange={(date) => setLessonDate(date)}
+          filterDate={isWeekday}
         />
-      </InputGroup>
+      </InputGroup> */}
 
       <InputGroup size="sm" className="mb-3">
         <InputGroup.Text id="inputGroupInput">Time</InputGroup.Text>

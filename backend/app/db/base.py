@@ -11,3 +11,4 @@ from app.models.room import Room  # noqa
 from app.models.schedule import Schedule  # noqa
 from app.models.subject import Subject  # noqa
 from app.models.week import Week # noqa
+from app.models.week_number import WeekNumber # noqa

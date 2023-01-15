@@ -5,4 +5,5 @@ from .crud_schedule import schedule
 from .crud_room import room
 from .crud_subject import subject
 from .crud_week import week
+from .crud_week_number import week_number
 from .crud_lesson_time import lesson_time

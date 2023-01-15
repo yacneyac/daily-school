@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Button, Card, Col, Row } from "react-bootstrap";
+// import PropTypes from "prop-types";
+import { Button, Card, Col, Row, Badge } from "react-bootstrap";
 // https://react-bootstrap-table.github.io/react-bootstrap-table2
 import BootstrapTable from "react-bootstrap-table-next";
+// import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
+
 import { useDispatch, useSelector } from "react-redux";
-import TimeTable from "./timeTable.comp";
-import { setTimeTableDay } from "./timeTableSlice";
-import CreateLessonModal from "../lesson/CreateLessonModal.comp";
+// import TimeTable from "./timeTable.comp";
+// import { setTimeTableDay } from "./timeTableSlice";
+// import CreateLessonModal from "../lesson/CreateLessonModal.comp";
 import { Link } from "react-router-dom";
 // import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 // import { fetchTimeTable } from "./timeTableAction";
@@ -19,6 +21,33 @@ const TimeTableCard = (props) => {
   }
 
   const columns = [
+    {
+      dataField: "db_id",
+      text: "",
+      align: 'center',
+      formatter: (cell, row) => (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-trash"
+          viewBox="0 0 16 16"
+          style={{ pointerEvents: "auto" }}
+        >
+          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+          <path
+            fillRule="evenodd"
+            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+          />
+        </svg>
+      ),
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          console.log("REMOVE ROW:", row.db_id);
+        },
+      },
+    },
     {
       dataField: "id",
       text: "#",
@@ -43,12 +72,36 @@ const TimeTableCard = (props) => {
   ];
   // const [modalShow, setModalShow] = useState(false);
   const { week } = useSelector((state) => state.timeTable);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // function onClickHandler(day_) {
   //   dispatch(setTimeTableDay(day_));
   //   setModalShow(true);
   // }
+
+  // function afterSaveCell(oldValue, newValue) {
+  //   console.log('--after save cell--');
+  //   console.log('New Value was apply as');
+  //   console.log(newValue);
+  //   console.log(`and the type is ${typeof newValue}`);
+  // }
+
+  // const selectRow = {
+  //   mode: "checkbox",
+  //   clickToSelect: true,
+  //   onSelect: (row, isSelect, rowIndex, e) => {
+  //     console.log(row.id, row.db_id);
+  //     console.log(isSelect);
+  //     // console.log(rowIndex);
+  //     // console.log(e);
+  //   },
+  // };
+
+  // const rowEvents = {
+  //   onClick: (e, row, rowIndex) => {
+  //     console.log("REMOVE: ", row.db_id);
+  //   },
+  // };
 
   function generateCard(days) {
     return days.map((day, index) => {
@@ -70,23 +123,14 @@ const TimeTableCard = (props) => {
                 keyField="id"
                 data={week[day].lessons}
                 columns={columns}
+                // rowEvents={rowEvents}
+                // selectRow={ selectRow }
+                // cellEdit={ cellEditFactory({
+                //   mode: 'dbclick',
+                //   onStartEdit: (row, column, rowIndex, columnIndex) => { console.log('start to edit!!!'); },
+                //   afterSaveCell
+                // }) }
               />
-
-              {/* <hr /> */}
-              {/* <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => onClickHandler({ day })}
-                  // onClick={() => setModalShow(true)}
-                >
-                  Add
-                </Button> */}
-              {/* <CreateLessonModal
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                /> */}
-              {/* </div> */}
             </Card.Body>
           </Card>
         </Col>
@@ -95,55 +139,6 @@ const TimeTableCard = (props) => {
   }
 
   if (Object.keys(week).length !== 0) return generateCard(props.days);
-
-  // return (
-  //   <>
-  //     <Row>{generateCard(["Monday", "Tuesday", "Wednesday"])}</Row>
-  //     <Row>{generateCard(["Thursday", "Friday", "Saturday"])}</Row>
-  //   </>
-  // );
-
-  // for (const [day, dayLessons] of Object.entries(lessons)) {
-  //   console.log(`${key}: ${value}`);
-  // }
-
-  // return lessons.map((obj, index) => {
-  //   const day = Object.keys(obj)[0];
-  //   const dayLessons = Object.values(obj)[0];
-  //   // console.log(dayLessons)
-  //   return (
-  //     <Col key={index}>
-  //       <Card>
-  //         <Card.Header style={{ textAlign: "center" }}>
-  //           {day} 2022-08-09
-  //         </Card.Header>
-  //         <Card.Body>
-  //           {/* <TimeTable dayLessons={dayLessons} index={index}/> */}
-
-  //           <BootstrapTable
-  //             striped
-  //             hover
-  //             condensed
-  //             // size="sm"
-  //             noDataIndication="Table is Empty"
-  //             keyField="id"
-  //             data={dayLessons}
-  //             columns={columns}
-  //           />
-
-  //           <hr />
-  //           <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-  //             <Button type="submit" variant="secondary" size="sm">
-  //               Save
-  //             </Button>
-  //           </div>
-  //         </Card.Body>
-  //       </Card>
-  //     </Col>
-  //   );
-  // });
-
-  // );
 };
 
 TimeTableCard.propTypes = {};

@@ -4,6 +4,6 @@ from app.db.base_class import Base
 
 
 class Week(Base):
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(256), nullable=False, unique=True)
-
+    id = Column(Integer, primary_key=True)
+    day_id = Column(Integer, nullable=False, unique=True)
+    name = Column(String, nullable=False, unique=True)

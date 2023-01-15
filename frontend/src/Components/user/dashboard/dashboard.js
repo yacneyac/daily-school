@@ -8,6 +8,7 @@ import {
   Row,
   Table,
 } from "react-bootstrap";
+import { PaginationControl } from 'react-bootstrap-pagination-control';
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 // import { getUserProfile } from "../userAction";
@@ -17,21 +18,23 @@ import { fetchTimeTable } from "../../timetable/timeTableAction";
 import CreateLessonModal from "../../lesson/CreateLessonModal.comp";
 import { useNavigate } from "react-router-dom";
 
+
 const UserDashboard = () => {
   const [modalShow, setModalShow] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(new Date());
+  const [page, setPage] = useState(1)
   const { user } = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const { isLoading } = useSelector((state) => state.timeTable);
   const accessToken = sessionStorage.getItem("accessToken");
   const dispatch = useDispatch();
 
-  const isWeekday = (date) => {
-    const day = date.getDay();
-    return day !== 0
-  };
+  // const isWeekday = (date) => {
+    // const day = date.getDay();
+    // return day !== 0
+  // };
 
-  console.log("UserDashboard ", user);
+  // console.log("UserDashboard ", user);
 
   useEffect(() => {
     if (user.id && accessToken) {
@@ -46,7 +49,8 @@ const UserDashboard = () => {
   return (
     <Container>
       <div className="gap-5 d-md-flex justify-content-md-center">
-        {/* <Pagination size="sm" style={{ marginLeft: "95px" }}>
+      {/* https://reactjsexample.com/tag/pagination/*/}
+         {/* <Pagination size="sm" style={{ marginLeft: "95px" }}>
           <Pagination.First />
           <Pagination.Prev />
           <Pagination.Item>{1}</Pagination.Item>
@@ -63,7 +67,22 @@ const UserDashboard = () => {
           <Pagination.Next />
           <Pagination.Last />
         </Pagination> */}
-        <DatePicker
+
+        <PaginationControl
+            style={{ marginLeft: "95px" }}
+            page={page}
+            between={10}
+            total={40}
+            limit={1}
+            changePage={(page) => {
+              setPage(page); 
+              console.log(page)
+            }}
+            ellipsis={1}
+          />
+
+
+        {/* <DatePicker
           dateFormat="yyyy-MM-dd"
           calendarStartDay={1}
           className="ds-date"
@@ -71,7 +90,8 @@ const UserDashboard = () => {
           onChange={(date) => setStartDate(date)}
           filterDate={isWeekday}
           withPortal
-        />
+          showWeekNumbers
+        /> */}
         <Button
           variant="secondary"
           size="sm"
@@ -86,9 +106,6 @@ const UserDashboard = () => {
           onHide={() => setModalShow(false)}
         />
       </div>
-      {/* <Row> */}
-      {/* <Col> */}
-      {/* <TimeTableCard /> */}
 
       <Row style={{ marginBottom: "12px" }}>
         <TimeTableCard days={["Monday", "Tuesday", "Wednesday"]} />
@@ -96,51 +113,6 @@ const UserDashboard = () => {
       <Row style={{ marginBottom: "12px" }}>
         <TimeTableCard days={["Thursday", "Friday", "Saturday"]} />
       </Row>
-
-      {/* {isLoading ? "loading tables" : <TimeTableCard /> } */}
-      {/* </Col> */}
-      {/* <Col> */}
-      {/* <TimeTable /> */}
-      {/* </Col> */}
-      {/* <Col> */}
-      {/* <TimeTable /> */}
-      {/* </Col> */}
-      {/* </Row> */}
-      {/* <Row>
-        <Col>
-          <Card style={{ width: "18rem" }}>
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card style={{ width: "18rem" }}>
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card style={{ width: "18rem" }}>
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row> */}
     </Container>
   );
 };

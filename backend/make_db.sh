@@ -7,9 +7,10 @@
 # psql -h localhost -p 5432 --username db_user --dbname postgres -c "CREATE DATABASE school OWNER db_user"
 
 # add version script alembic revision -m "create account table"
-alembic revision --autogenerate -m "init DB"
+poetry run alembic revision --autogenerate -m "init DB"
+# alembic revision --autogenerate -m "Add a column"
 
 # create DB
-alembic upgrade head
+poetry run alembic upgrade head
 
-python3 ./populate_db.py
+poetry run python3.9 ./populate_db.py

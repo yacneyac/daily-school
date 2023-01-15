@@ -1,8 +1,8 @@
 """init DB
 
-Revision ID: 7238233fd470
+Revision ID: a5727d3f0c20
 Revises: 
-Create Date: 2022-08-15 21:18:56.456863
+Create Date: 2023-01-13 11:59:53.465417
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7238233fd470'
+revision = 'a5727d3f0c20'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -77,11 +77,20 @@ def upgrade() -> None:
     op.create_index(op.f('ix_teacher_id'), 'teacher', ['id'], unique=False)
     op.create_table('week',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=256), nullable=False),
+    sa.Column('day_id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('day_id'),
     sa.UniqueConstraint('name')
     )
-    op.create_index(op.f('ix_week_id'), 'week', ['id'], unique=False)
+    op.create_table('weeknumber',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('number', sa.Integer(), nullable=False),
+    sa.Column('start_ts', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('start_ts')
+    )
+    op.create_index(op.f('ix_weeknumber_number'), 'weeknumber', ['number'], unique=True)
     op.create_table('group_',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=256), nullable=False),
@@ -113,18 +122,20 @@ def upgrade() -> None:
     op.create_index(op.f('ix_group2teacher_id'), 'group2teacher', ['id'], unique=False)
     op.create_table('schedule',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('week_number', sa.Integer(), nullable=False),
     sa.Column('day_id', sa.Integer(), nullable=False),
     sa.Column('subject_id', sa.Integer(), nullable=False),
     sa.Column('room_id', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=False),
     sa.Column('time_id', sa.Integer(), nullable=False),
-    sa.Column('date', sa.String(length=256), nullable=False),
+    sa.Column('date', sa.String(), nullable=False),
     sa.Column('created_ts', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['day_id'], ['week.id'], ),
+    sa.ForeignKeyConstraint(['day_id'], ['week.day_id'], ),
     sa.ForeignKeyConstraint(['group_id'], ['group_.id'], ),
     sa.ForeignKeyConstraint(['room_id'], ['room.id'], ),
     sa.ForeignKeyConstraint(['subject_id'], ['subject.id'], ),
     sa.ForeignKeyConstraint(['time_id'], ['lessontime.id'], ),
+    sa.ForeignKeyConstraint(['week_number'], ['weeknumber.number'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('day_id', 'time_id', name='unique_schedule')
     )
@@ -142,7 +153,8 @@ def downgrade() -> None:
     op.drop_table('group2student')
     op.drop_index(op.f('ix_group__id'), table_name='group_')
     op.drop_table('group_')
-    op.drop_index(op.f('ix_week_id'), table_name='week')
+    op.drop_index(op.f('ix_weeknumber_number'), table_name='weeknumber')
+    op.drop_table('weeknumber')
     op.drop_table('week')
     op.drop_index(op.f('ix_teacher_id'), table_name='teacher')
     op.drop_table('teacher')
