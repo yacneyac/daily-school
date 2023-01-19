@@ -1,86 +1,48 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Pagination,
-  Row,
-  Table,
-} from "react-bootstrap";
-import { PaginationControl } from 'react-bootstrap-pagination-control';
+import { Button, Container, Row } from "react-bootstrap";
+import { PaginationControl } from "react-bootstrap-pagination-control";
 import { useDispatch, useSelector } from "react-redux";
-import DatePicker from "react-datepicker";
-// import { getUserProfile } from "../userAction";
-// import BootstrapTable from "react-bootstrap-table-next";
 import TimeTableCard from "../../timetable/timeTableCard.comp";
 import { fetchTimeTable } from "../../timetable/timeTableAction";
 import CreateLessonModal from "../../lesson/CreateLessonModal.comp";
-import { useNavigate } from "react-router-dom";
-
 
 const UserDashboard = () => {
   const [modalShow, setModalShow] = useState(false);
-  // const [startDate, setStartDate] = useState(new Date());
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(null);
   const { user } = useSelector((state) => state.user);
-  // const navigate = useNavigate();
-  // const { isLoading } = useSelector((state) => state.timeTable);
+  const { lesson } = useSelector((state) => state);
+  const { activeWeekNumber } = useSelector((state) => state.timeTable);
   const accessToken = sessionStorage.getItem("accessToken");
   const dispatch = useDispatch();
 
-  // const isWeekday = (date) => {
-    // const day = date.getDay();
-    // return day !== 0
-  // };
-
-  // console.log("UserDashboard ", user);
-
   useEffect(() => {
     if (user.id && accessToken) {
-      console.log("fetchTimeTable");
-      dispatch(fetchTimeTable());
+      dispatch(fetchTimeTable(activeWeekNumber));
     }
-    // else{
-    // navigate("/signin");
-    // }
-  }, [user.id, dispatch]);
+  }, [user.id, lesson.deleted, dispatch]);
+
+  useEffect(() => {
+    setPage(activeWeekNumber);
+  }, [activeWeekNumber, dispatch]);
+
+  function onChangePage(page) {
+    setPage(page);
+    dispatch(fetchTimeTable(page));
+  }
 
   return (
     <Container>
       <div className="gap-5 d-md-flex justify-content-md-center">
-      {/* https://reactjsexample.com/tag/pagination/*/}
-         {/* <Pagination size="sm" style={{ marginLeft: "95px" }}>
-          <Pagination.First />
-          <Pagination.Prev />
-          <Pagination.Item>{1}</Pagination.Item>
-          <Pagination.Ellipsis />
-
-          <Pagination.Item>{10}</Pagination.Item>
-          <Pagination.Item>{11}</Pagination.Item>
-          <Pagination.Item active>{12}</Pagination.Item>
-          <Pagination.Item>{13}</Pagination.Item>
-          <Pagination.Item>{14}</Pagination.Item>
-
-          <Pagination.Ellipsis />
-          <Pagination.Item>{20}</Pagination.Item>
-          <Pagination.Next />
-          <Pagination.Last />
-        </Pagination> */}
-
+        {/* Education week */}
         <PaginationControl
-            style={{ marginLeft: "95px" }}
-            page={page}
-            between={10}
-            total={40}
-            limit={1}
-            changePage={(page) => {
-              setPage(page); 
-              console.log(page)
-            }}
-            ellipsis={1}
-          />
-
+          style={{ marginLeft: "95px" }}
+          page={page}
+          between={10}
+          total={40}
+          limit={1}
+          changePage={(page) => onChangePage(page)}
+          ellipsis={1}
+        />
 
         {/* <DatePicker
           dateFormat="yyyy-MM-dd"
@@ -96,7 +58,14 @@ const UserDashboard = () => {
           variant="secondary"
           size="sm"
           style={{ marginBottom: "16px" }}
-          // onClick={() => onClickHandler({ day })}
+          onClick={() => dispatch(fetchTimeTable(""))}
+        >
+          Current week
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          style={{ marginBottom: "16px" }}
           onClick={() => setModalShow(true)}
         >
           Add

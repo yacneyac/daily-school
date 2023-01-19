@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, status, Path, Depends, Query
-from typing import List, Optional
+from fastapi import APIRouter, HTTPException, status
+from typing import Optional
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime as dt, timedelta
@@ -21,7 +22,7 @@ async def make_education_weeks(obj_in: schemas.WeekNumberCreate, db: Session = d
 
 
 # @router.post('/lesson', status_code=201, response_model=Schedule, dependencies=[deps.current_user])
-@router.post('/weeks/{week_number}/lesson', status_code=201)
+@router.post('/weeks/{week_number}/lessons', status_code=201)
 async def create_lesson(week_number: int, schedule_in: ScheduleCreate, db: Session = deps.db_session):
     """ Create a new lesson in schedule """
     try:
@@ -30,11 +31,17 @@ async def create_lesson(week_number: int, schedule_in: ScheduleCreate, db: Sessi
 
         print(f'IntegrityError: "{err}"')
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail='server error')
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail='already exists')
 
     print('SCHEDULE: ', schedule)
     return schedule
+
+
+@router.delete('/weeks/{week_number}/lessons/{lesson_id}', status_code=204)
+async def remove_lesson(week_number: int, lesson_id: int, db: Session = deps.db_session):
+    crud.schedule.remove(db=db, id_=lesson_id)
+    return ''
 
 
 # @router.get('/', dependencies=[deps.current_user])
@@ -45,11 +52,12 @@ async def get_schedule(week_number: Optional[int] = None, db: Session = deps.db_
     # load today week
     schedule = defaultdict(dict)
     if week_number is None:
-        # TODO: get education week number by today
-        week_number = dt.now().isocalendar().week
+        week_number = db.query(func.max(models.WeekNumber.number)).\
+            filter(models.WeekNumber.start_ts <= dt.now().timestamp()).\
+            scalar()
 
-    week = db.query(models.WeekNumber). \
-        filter(models.WeekNumber.number == week_number). \
+    week = db.query(models.WeekNumber).\
+        filter(models.WeekNumber.number == week_number).\
         first()
 
     week_days = [(dt.fromtimestamp(week.start_ts) + timedelta(days=day)) for day in range(0, 6)]
@@ -67,7 +75,7 @@ async def get_schedule(week_number: Optional[int] = None, db: Session = deps.db_
             lesson['id'] = index
             del lesson['day']
 
-    return schedule
+    return {'schedule': schedule, 'activeWeekNumber': week_number}
 
 
 @router.get('/parameters', dependencies=[deps.current_user])

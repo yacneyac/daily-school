@@ -1,11 +1,11 @@
-import { func } from "prop-types";
 import api from "./api";
 
-const queryString = require("query-string");
-
-async function getSchedule() {
+async function getSchedule(week_id) {
+  if (week_id) {
+    week_id = "/" + week_id;
+  }
   return api
-    .get("/schedule/weeks/1")  // TODO: change week number
+    .get("/schedule/weeks" + week_id)
     .then((response) => {
       return response.data;
     })
@@ -27,28 +27,34 @@ async function getScheduleParameters() {
     });
 }
 
-
-async function createLesson(data){
-  console.log('DATA>: ', JSON.stringify(data))
+async function createLesson(data) {
+  console.log("DATA>: ", JSON.stringify(data));
   return api
-  .post(
-      "/schedule/weeks/1/lesson", // TODO: CHANGE THE ID!!!
-      JSON.stringify(data)
-    )
-  .then((response)=>{
-    return response.data;
-
-  })
-  .catch((err)=>{
-    throw new Error(err);
-  })
-
+    .post("/schedule/weeks/" + data.week_id + "/lessons", JSON.stringify(data))
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
 }
 
+async function deleteLesson(data) {
+  console.log("deleteLesson DATA>: ", JSON.stringify(data));
+  return api
+    .delete("/schedule/weeks/" + data.week_id + "/lessons/" + data.lesson_id)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+}
 
 const ScheduleService = {
   getSchedule,
   getScheduleParameters,
-  createLesson
+  createLesson,
+  deleteLesson,
 };
 export default ScheduleService;

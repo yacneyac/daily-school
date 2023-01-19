@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Form,
-  InputGroup,
-  Row,
-  Col,
-  Alert
-} from "react-bootstrap";
-// import DatePicker from "react-datepicker";
+import { Button, Form, InputGroup, Row, Col, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
+
 import { addLesson } from "./lessonAction";
-// import { lessonInit } from "./lessonSlice";
+import { lessonInit } from "./lessonSlice";
 
 const CreateLessonForm = () => {
-  const { parameters } = useSelector((state) => state.timeTable);
+  const { parameters, activeWeekNumber } = useSelector(
+    (state) => state.timeTable
+  );
   const { isLoading, error, created } = useSelector((state) => state.lesson);
   const dispatch = useDispatch();
-  const [disabled, setDisabled] = useState(true);
-  // const navigate = useNavigate();
+  const [disabledBtn, setDisabledBtn] = useState(true);
 
   const [fields, setFields] = useState({
     time_id: parameters.time[0].id,
@@ -28,15 +21,7 @@ const CreateLessonForm = () => {
     day_id: {},
   });
 
-  // const [lessonDate, setLessonDate] = useState();
-
-  // const isWeekday = (date) => {
-  //   const day = date.getDay();
-  //   return day !== 0
-  // };
-
-
-  // reload page if lesson is created 
+  // reload page if lesson is created
   useEffect(() => {
     if (created) {
       window.location.reload();
@@ -46,11 +31,14 @@ const CreateLessonForm = () => {
   function onChange(el) {
     var { name, value } = el.target;
 
+    // switch
     if (el.target.className === "form-check-input") {
       const newDays = fields[name];
       newDays[el.target.id] = el.target.checked;
 
       value = newDays;
+
+      console.log("newDays: ", newDays);
     }
 
     setFields((prevState) => ({
@@ -60,18 +48,20 @@ const CreateLessonForm = () => {
 
     // diable Create button
     const dayVal = Object.values(fields.day_id);
-    setDisabled(dayVal.every((el) => el === false));
+    setDisabledBtn(dayVal.every((el) => el === false));
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    fields["week_id"] = activeWeekNumber;
     dispatch(addLesson(fields));
+    dispatch(lessonInit());
   };
 
   function makeOptions(optList) {
     return optList.map((opt, index) => {
       return (
-        <option key={index} value={opt.id}>
+        <option key={index} value={opt.id} disabled={opt.disabled}>
           {opt.name}
         </option>
       );
@@ -80,11 +70,11 @@ const CreateLessonForm = () => {
 
   function daySwitch(days) {
     return days.map((dayName, index) => {
-      // const day = parameters.week.filter((day) => day.name === dayName);
+      const day = parameters.week.filter((day) => day.name === dayName);
       return (
         <Form.Switch
           key={index}
-          // id={day[0].id}
+          id={day[0].day_id}
           name="day_id"
           label={dayName}
           onChange={onChange}
@@ -95,7 +85,7 @@ const CreateLessonForm = () => {
 
   return (
     <Form onSubmit={handleSubmit} autoComplete="off">
-      <h5 style={{ textAlign: "center" }}>Add lesson</h5>
+      <h5 style={{ textAlign: "center" }}>Create a lesson</h5>
       <hr />
       {error && <Alert variant="danger"> {error} </Alert>}
       <Row>
@@ -104,27 +94,6 @@ const CreateLessonForm = () => {
           {daySwitch(["Thursday", "Friday", "Saturday"])}
         </Col>
       </Row>
-
-      {/* <InputGroup size="sm" className="mb-3">
-        <InputGroup.Text id="inputGroupInput">Date</InputGroup.Text>
-        <DatePicker
-        className="ds-date"
-          dateFormat="yyyy-MM-dd"
-          showWeekNumbers
-          calendarStartDay={1}
-          selected={lessonDate}
-          name="date"
-          // card={props.cardName}
-          // value={lessonDate}
-          // style={{borderRadius: "0.375rem"}}
-          // minDate={new Date(props.minDate)}
-          // excludeDateIntervals={[{start: new Date("2021-12-10"), end: new Date("2021-12-20")}]}
-          // required={props.field.required}
-          // disabled={field.disabled}
-          onChange={(date) => setLessonDate(date)}
-          filterDate={isWeekday}
-        />
-      </InputGroup> */}
 
       <InputGroup size="sm" className="mb-3">
         <InputGroup.Text id="inputGroupInput">Time</InputGroup.Text>
@@ -156,7 +125,7 @@ const CreateLessonForm = () => {
         <Button
           type="submit"
           variant="success"
-          disabled={error || disabled || isLoading}
+          disabled={error || disabledBtn || isLoading}
         >
           {isLoading ? "Loading…" : "Create"}
         </Button>

@@ -15,7 +15,7 @@ class Schedule(Base):
 
     created_ts = Column(Integer, nullable=False)
 
-    UniqueConstraint(day_id, time_id, name='unique_schedule')
+    UniqueConstraint(week_number, day_id, time_id, name='unique_schedule')
 
     def to_dict(self):
         return {

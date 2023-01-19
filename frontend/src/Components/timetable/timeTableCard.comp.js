@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from "react";
-// import PropTypes from "prop-types";
-import { Button, Card, Col, Row, Badge } from "react-bootstrap";
+import React, { useState } from "react";
+import { Card, Col } from "react-bootstrap";
 // https://react-bootstrap-table.github.io/react-bootstrap-table2
 import BootstrapTable from "react-bootstrap-table-next";
-// import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
-
-import { useDispatch, useSelector } from "react-redux";
-// import TimeTable from "./timeTable.comp";
-// import { setTimeTableDay } from "./timeTableSlice";
-// import CreateLessonModal from "../lesson/CreateLessonModal.comp";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-// import { fetchTimeTable } from "./timeTableAction";
 
-// import lessons from "./dummyLessons.json";
+import RemoveLessonModal from "../lesson/RemoveLesssonModal.comp";
 
 const TimeTableCard = (props) => {
+  const [modalShow, setModalShow] = useState(false);
+  const [removeLessonId, setRemoveLessonId] = useState(null);
+
   function groupFormatter(cell, row) {
     return <Link to={`/group/${row.groupId}`}>{row.group}</Link>;
   }
@@ -24,7 +19,7 @@ const TimeTableCard = (props) => {
     {
       dataField: "db_id",
       text: "",
-      align: 'center',
+      align: "center",
       formatter: (cell, row) => (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -45,6 +40,9 @@ const TimeTableCard = (props) => {
       events: {
         onClick: (e, column, columnIndex, row, rowIndex) => {
           console.log("REMOVE ROW:", row.db_id);
+
+          setModalShow(true);
+          setRemoveLessonId(row.db_id);
         },
       },
     },
@@ -70,66 +68,47 @@ const TimeTableCard = (props) => {
       formatter: groupFormatter,
     },
   ];
-  // const [modalShow, setModalShow] = useState(false);
+
   const { week } = useSelector((state) => state.timeTable);
-  // const dispatch = useDispatch();
 
-  // function onClickHandler(day_) {
-  //   dispatch(setTimeTableDay(day_));
-  //   setModalShow(true);
-  // }
+  const styles = {
+    today: {
+      textAlign: "center",
+      fontWeight: "bold",
+      color: "white",
+      backgroundColor: "#0d6efd",
+    },
+    day: {
+      textAlign: "center",
+    },
+  };
 
-  // function afterSaveCell(oldValue, newValue) {
-  //   console.log('--after save cell--');
-  //   console.log('New Value was apply as');
-  //   console.log(newValue);
-  //   console.log(`and the type is ${typeof newValue}`);
-  // }
-
-  // const selectRow = {
-  //   mode: "checkbox",
-  //   clickToSelect: true,
-  //   onSelect: (row, isSelect, rowIndex, e) => {
-  //     console.log(row.id, row.db_id);
-  //     console.log(isSelect);
-  //     // console.log(rowIndex);
-  //     // console.log(e);
-  //   },
-  // };
-
-  // const rowEvents = {
-  //   onClick: (e, row, rowIndex) => {
-  //     console.log("REMOVE: ", row.db_id);
-  //   },
-  // };
+  const today = new Date().toISOString().split("T")[0];
 
   function generateCard(days) {
     return days.map((day, index) => {
       return (
         <Col key={index}>
           <Card id={day}>
-            <Card.Header style={{ textAlign: "center" }}>
+            <Card.Header
+              style={week[day].date === today ? styles.today : styles.day}
+            >
               {day} {week[day].date}
             </Card.Header>
             <Card.Body>
-              {/* <TimeTable dayLessons={week[day].lessons} /> */}
-
               <BootstrapTable
                 striped
                 hover
                 condensed
-                // size="sm"
                 noDataIndication="Table is Empty"
                 keyField="id"
                 data={week[day].lessons}
                 columns={columns}
-                // rowEvents={rowEvents}
-                // selectRow={ selectRow }
-                // cellEdit={ cellEditFactory({
-                //   mode: 'dbclick',
-                //   onStartEdit: (row, column, rowIndex, columnIndex) => { console.log('start to edit!!!'); },
-                //   afterSaveCell
-                // }) }
+              />
+              <RemoveLessonModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                removeLessonId={removeLessonId}
               />
             </Card.Body>
           </Card>
