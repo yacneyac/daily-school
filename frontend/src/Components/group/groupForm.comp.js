@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { Container, Form, InputGroup } from "react-bootstrap";
-import BootstrapTable from "react-bootstrap-table-next";
+// import BootstrapTable from "react-bootstrap-table-next";
 
 import students from "./dummyStudens.json";
 
@@ -10,6 +10,13 @@ const GroupForm = (props) => {
   const [group, setGroup] = useState("");
 
   const params = useParams();
+
+
+  useEffect(() => {
+    console.log('GET GROUP')
+  }, []);
+
+
 
   function onChange(el) {
     var { name, value } = el.target;
@@ -49,7 +56,7 @@ const GroupForm = (props) => {
         </InputGroup>
       </div>
 
-      <BootstrapTable
+      {/* <BootstrapTable
         striped
         hover
         condensed
@@ -58,7 +65,7 @@ const GroupForm = (props) => {
         keyField="id"
         data={students}
         columns={columns}
-      />
+      /> */}
     </Container>
   );
 };

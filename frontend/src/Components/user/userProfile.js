@@ -26,7 +26,15 @@ const UserProfile = () => {
   return !isLoading && (
     <Container>
       <Row md={4}>
-        <Col md={{ span: 4, offset: 2 }}>
+      <Col md={4}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Avatar</Card.Title>
+              <UserPubSettings />
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
           <Card>
             <Card.Body>
               <Card.Title>Public settings</Card.Title>

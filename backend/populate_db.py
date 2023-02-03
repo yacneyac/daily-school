@@ -13,8 +13,11 @@ from app.models.lesson_time import LessonTime
 from app.models.group import Group_
 from app.models.teacher import Teacher
 
+from randomuser import RandomUser
+
+
 db = SessionLocal()
-for sub in ['Math', 'English']:
+for sub in ['Mathematics', 'English', 'Geography', 'Music', 'Physics', 'Biology', 'Chemistry', 'Literacy']:
     db_obj = Subject(
         name=sub,
         enabled=1,
@@ -51,6 +54,7 @@ def _week_numbers(start_date, end_date):
         w_number += 1
 
 
+# make education year by week
 for week_number, start_ts in _week_numbers('2022-09-05', '2023-05-31'):
     week_num = models.WeekNumber(
         number=week_number,
@@ -70,7 +74,6 @@ for ltime in ['09:00', '10:00', '11:00']:
     db.refresh(db_obj)
 
 
-# for gr in ['1-B', '2-B', '3-A']:
 db_obj = Teacher(
     first_name="Test FN",
     middle_name="Test MN",
@@ -98,6 +101,42 @@ for gr in ['1-B', '2-B', '3-A']:
     db.refresh(db_obj)
 
 
+for g_id in [1, 2]:
+    for user in RandomUser.generate_users(25, {'nat': 'ca'}):
+        db_obj = models.Student(
+            first_name=user.get_first_name(),
+            middle_name=user.get_last_name(),
+            last_name=user.get_last_name(),
+            hashed_password=user.get_password(),
+            date_of_birth=507330000, #int(dt.strptime(user.get_dob().split('T')[0], '%Y-%m-%d').timestamp()),
+            # average_mark=4.5,
+            address=user.get_street(),
+            email=user.get_email(),
+            phone=user.get_phone(),
+            group_id=g_id,
+            created_ts=int(dt.timestamp(dt.now()))
+
+        )
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+
+        # for sub_id in [1,2,3,4]:
+        #     db_obj = models.StudentMarks(
+        #         student_id=db_obj.id,
+        #         subject_id=sub_id,
+        #         mark='4',
+        #         date='2022-05-05'
+        #
+        #     )
+        #     db.add(db_obj)
+        #     db.commit()
+        #     db.refresh(db_obj)
+
+
+
+
 db.close()
 
 
+print('OK')

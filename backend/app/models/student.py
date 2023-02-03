@@ -14,7 +14,7 @@ class Student(Base):
 
     date_of_birth = Column(Integer, nullable=False)
     # sex = Column(String(10), ForeignKey("sex.id"), nullable=False)
-    average_mark = Column(DECIMAL(), nullable=False)
+    # average_mark = Column(DECIMAL(), nullable=False)
 
     address = Column(String(256), nullable=False)
 
@@ -22,6 +22,6 @@ class Student(Base):
     phone = Column(String(256), nullable=True)
     home_phone = Column(String(256), nullable=True)
 
-    # group_id = Column(String(10), ForeignKey('group.id'), nullable=False)
+    group_id = Column(Integer, ForeignKey('group_.id'))
     # group = relationship('Group', back_populates='students')
     created_ts = Column(Integer, nullable=False)

@@ -28,5 +28,11 @@ class CRUDGroup(CRUDBase[Group_, GroupCreate, GroupUpdate]):
 
         return db_obj
 
+    # def get(self, db: Session, t_id: int, g_id: int):
+    #     return db.query(self.model).filter(self.model.id == g_id).filter(self.model.owner_id == t_id).first()
+
+    def get_by_teacher(self, db: Session, t_id: int):
+        return db.query(self.model).filter(self.model.owner_id == t_id).all()
+
 
 group = CRUDGroup(Group_)

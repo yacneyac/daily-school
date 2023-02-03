@@ -24,7 +24,7 @@ async def create_user(*, user_in: CreateUser, db: Session = deps.db_session) -> 
     if user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail='The user with this email already exists',
+            detail='The user with this email already exists',  # TODO: change the message
         )
 
     crud_user.create(db=db, obj_in=user_in)
@@ -34,11 +34,8 @@ async def create_user(*, user_in: CreateUser, db: Session = deps.db_session) -> 
 @router.post('/signin', status_code=200, response_model=Token)
 async def login(db: Session = deps.db_session, form_data: OAuth2PasswordRequestForm = Depends()):
     """ Authenticate user by email and generate access and refresh tokens """
-    print('RECIVE: ', form_data)
     user = auth.authenticate(email=form_data.username, password=form_data.password, db=db)
-    print('USER: ', user)
     if not user:
-        print('RAISE 401')
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Incorrect username or password',

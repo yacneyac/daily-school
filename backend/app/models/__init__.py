@@ -5,6 +5,7 @@ from .lesson_time import LessonTime
 from .room import Room
 from .schedule import Schedule
 from .student import Student
+from .student_marks import StudentMarks
 from .subject import Subject
 from .teacher import Teacher
 from .week import Week

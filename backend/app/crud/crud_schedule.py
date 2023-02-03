@@ -50,8 +50,8 @@ class CRUDSchedule(CRUDBase[models.Schedule, ScheduleCreate, ScheduleUpdate]):
         schedule = db.query(self.model). \
             join(models.Subject, self.model.subject_id == models.Subject.id). \
             join(models.Week, self.model.day_id == models.Week.id). \
-            join(models.Room, self.model.subject_id == models.Room.id).\
-            join(models.Group_, self.model.subject_id == models.Group_.id).\
+            join(models.Room, self.model.room_id == models.Room.id).\
+            join(models.Group_, self.model.group_id == models.Group_.id).\
             join(models.LessonTime, self.model.time_id == models.LessonTime.id). \
             filter(self.model.week_number == week_number).\
             order_by(models.LessonTime.name).\

@@ -16,6 +16,7 @@ import LoginForm from "./Components/login/LoginForm";
 import PasswordResetForm from "./Components/Form/PasswordResetForm";
 import { useSelector } from "react-redux";
 import GroupForm from "./Components/group/groupForm.comp";
+import LessonForm from "./Components/lesson/LessonForm.comp";
 
 
 function App() {
@@ -50,7 +51,8 @@ function App() {
                 <Route path="profile" element={<UserProfile />} />
               </Route>
               <Route path="dashboard" element={<UserDashboard />} />
-              <Route path="group/:groupId" element={<GroupForm />} />
+              <Route path="groups" element={<GroupForm />} />
+              <Route path="lessons/:lessonId" element={<LessonForm />} />
             </Route>
           </Route>
         </Routes>

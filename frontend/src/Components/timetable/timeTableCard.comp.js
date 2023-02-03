@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { Card, Col } from "react-bootstrap";
 // https://react-bootstrap-table.github.io/react-bootstrap-table2
-import BootstrapTable from "react-bootstrap-table-next";
+// import BootstrapTable from "react-bootstrap-table-next";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+// import { fetchLesson } from "../lesson/lessonAction";
 
 import RemoveLessonModal from "../lesson/RemoveLesssonModal.comp";
 
 const TimeTableCard = (props) => {
+  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const { user } = useSelector((state) => state.user);
   const [modalShow, setModalShow] = useState(false);
   const [removeLessonId, setRemoveLessonId] = useState(null);
-
+  const { week } = useSelector((state) => state.timeTable);
+  
   function groupFormatter(cell, row) {
     return <Link to={`/group/${row.groupId}`}>{row.group}</Link>;
   }
@@ -69,7 +74,7 @@ const TimeTableCard = (props) => {
     },
   ];
 
-  const { week } = useSelector((state) => state.timeTable);
+
 
   const styles = {
     today: {
@@ -85,6 +90,18 @@ const TimeTableCard = (props) => {
 
   const today = new Date().toISOString().split("T")[0];
 
+  // TODO: Get lesson
+  const rowEvents = {
+    onDoubleClick: (e, row, rowIndex) => {
+      console.log("onDoubleClick:::", row.db_id);
+
+      // teachers/id/lessons/id
+      // dispatch(fetchLesson({ lessonID: row.db_id, teacherID: user.id }));
+
+      navigate("/lessons/" + row.db_id);
+    },
+  };
+
   function generateCard(days) {
     return days.map((day, index) => {
       return (
@@ -96,7 +113,7 @@ const TimeTableCard = (props) => {
               {day} {week[day].date}
             </Card.Header>
             <Card.Body>
-              <BootstrapTable
+              {/* <BootstrapTable
                 striped
                 hover
                 condensed
@@ -104,7 +121,8 @@ const TimeTableCard = (props) => {
                 keyField="id"
                 data={week[day].lessons}
                 columns={columns}
-              />
+                rowEvents={rowEvents}
+              /> */}
               <RemoveLessonModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}

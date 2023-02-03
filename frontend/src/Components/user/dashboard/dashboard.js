@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 import { PaginationControl } from "react-bootstrap-pagination-control";
 import { useDispatch, useSelector } from "react-redux";
+
 import TimeTableCard from "../../timetable/timeTableCard.comp";
 import { fetchTimeTable } from "../../timetable/timeTableAction";
 import CreateLessonModal from "../../lesson/CreateLessonModal.comp";
@@ -18,12 +19,14 @@ const UserDashboard = () => {
   useEffect(() => {
     if (user.id && accessToken) {
       dispatch(fetchTimeTable(activeWeekNumber));
+      setPage(activeWeekNumber);
     }
-  }, [user.id, lesson.deleted, dispatch]);
+  }, [user.id, lesson.deleted, activeWeekNumber, dispatch]);
 
-  useEffect(() => {
-    setPage(activeWeekNumber);
-  }, [activeWeekNumber, dispatch]);
+  
+  // useEffect(() => {
+  //   setPage(activeWeekNumber);
+  // }, [activeWeekNumber, dispatch]);
 
   function onChangePage(page) {
     setPage(page);
@@ -43,17 +46,6 @@ const UserDashboard = () => {
           changePage={(page) => onChangePage(page)}
           ellipsis={1}
         />
-
-        {/* <DatePicker
-          dateFormat="yyyy-MM-dd"
-          calendarStartDay={1}
-          className="ds-date"
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          filterDate={isWeekday}
-          withPortal
-          showWeekNumbers
-        /> */}
         <Button
           variant="secondary"
           size="sm"

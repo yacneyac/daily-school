@@ -934,6 +934,17 @@ files = [
 six = ">=1.4.0"
 
 [[package]]
+name = "randomuser"
+version = "1.6"
+description = "Python class for generating random user data using https://randomuser.me API"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "randomuser-1.6.tar.gz", hash = "sha256:fe50090b0397ce138efdad97b132fb934a6a7afea314537786778210bdf2531e"},
+]
+
+[[package]]
 name = "rsa"
 version = "4.9"
 description = "Pure-Python RSA implementation"
@@ -1201,4 +1212,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "f8b3996c7e8dbd5249fc05595353bb0db88d85014fbab86dcfcb6fee7ba5a062"
+content-hash = "5c46c8305816e0c45d4034fa67c29309ca9007e0b9f53cad9bf4b20b4c43476b"
