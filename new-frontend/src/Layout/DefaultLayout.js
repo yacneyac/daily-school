@@ -11,7 +11,7 @@ export const DefaultLayout = () => {
         <Header />
       </header>
       <main className="main">
-        <Container style={{ maxWidth: "1500px" }}>
+        <Container style={{ maxWidth: "1550px" }}>
           <Outlet />
         </Container>
       </main>

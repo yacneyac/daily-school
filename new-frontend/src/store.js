@@ -4,13 +4,15 @@ import userReducer from "./Components/User/UserSlice";
 import loginReducer from "./Components/Login/LoginSlice";
 import timeTableReducer from "./Components/User/Timetable/UserTimeTableSlice";
 import lessonReducer from "./Components/User/Lesson/LessonSlice"
+import lessonMarkReducer from "./Components/User/Lesson/LessonMarkSlice"
 
 const store = configureStore({
   reducer: {
     login: loginReducer,
     user: userReducer,
     timeTable: timeTableReducer,
-    lesson: lessonReducer
+    lesson: lessonReducer,
+    lessonMark: lessonMarkReducer
   },
 });
 

@@ -7,3 +7,4 @@ from .crud_subject import subject
 from .crud_week import week
 from .crud_week_number import week_number
 from .crud_lesson_time import lesson_time
+from .crud_student_marks import student_mark

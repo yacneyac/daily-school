@@ -5,7 +5,7 @@ from app.db.base_class import Base
 
 class Schedule(Base):
     id = Column(Integer, primary_key=True, index=True)  # lesson ID
-    week_number = Column(ForeignKey('weeknumber.number'), nullable=False)
+    week_number = Column(ForeignKey('weeknumber.number'), index=True, nullable=False)
     day_id = Column(Integer(), ForeignKey('week.day_id'), nullable=False)
     subject_id = Column(Integer(), ForeignKey('subject.id'), nullable=False)
     room_id = Column(Integer(), ForeignKey('room.id'), nullable=False)
@@ -16,11 +16,3 @@ class Schedule(Base):
     created_ts = Column(Integer, nullable=False)
 
     UniqueConstraint(week_number, day_id, time_id, name='unique_schedule_lesson')
-
-    def to_dict(self):
-        return {
-            'subject_id': self.subject_id,
-            'room_id': self.room_id,
-            'group_id': self.group_id,
-            'time_id': self.time_id,
-        }

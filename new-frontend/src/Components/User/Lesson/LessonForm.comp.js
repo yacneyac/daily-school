@@ -1,56 +1,37 @@
 import React, { useEffect } from "react";
-import { Container } from "react-bootstrap";
-// import BootstrapTable from "react-bootstrap-table-next";
-// import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
+import { Box, CircularProgress } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { fetchLesson } from "./lessonAction";
+import { fetchLesson } from "./LessonAction";
+import renderSelectEditInputCell from "./SelectEditMarks.comp";
 
+
+// TODO: get Sanday like free day 
 function generateDaysRange(year, month) {
   let arr = [];
   const lastDay = new Date(year, month, 0).getDate();
+  const today = new Date().getDate();
 
-  for (let i = 1; i <= lastDay; i += 1) {
+  for (let day = 1; day <= lastDay; day += 1) {
+    let headerClass = "";
+    if (day === today) {
+      headerClass = "today";
+    }
+
     arr.push({
-      dataField: i.toString(),
-      text: i.toString(),
-      // editor: {
-      //   type: Type.SELECT,
-      //   options: [
-      //     {
-      //       value: "1",
-      //       label: "1",
-      //     },
-      //     {
-      //       value: "2",
-      //       label: "2",
-      //     },
-      //     {
-      //       value: "3",
-      //       label: "3",
-      //     },
-      //     {
-      //       value: "4",
-      //       label: "4",
-      //     },
-      //     {
-      //       value: "5",
-      //       label: "5",
-      //     },
-      //     {
-      //       value: "N",
-      //       label: "N",
-      //     },
-      //   ],
-      // },
+      field: day.toString(),
+      headerName: day.toString(),
+      sortable: false,
+      width: 40,
+      minWidth: 10,
+      maxWidth: 40,
+      editable: true,
+      headerClassName: headerClass,
+      renderEditCell: renderSelectEditInputCell,
     });
   }
-  // {
-  // dataField: "1",
-  // text: "Day1",
-  // },
-
   return arr;
 }
 
@@ -58,7 +39,7 @@ function LessonForm() {
   console.log("LessonForm");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { activeLesson } = useSelector((state) => state.lesson);
+  const { isLoading, activeLesson } = useSelector((state) => state.lesson);
   const { lessonId } = useParams();
 
   useEffect(() => {
@@ -70,62 +51,112 @@ function LessonForm() {
 
   const dateParts = activeLesson.date.split("-");
   const days = generateDaysRange(dateParts[0], dateParts[1]);
-
-  // console.log(days);
+  const dateFormat = { month: "long", day: "numeric", year: "numeric" };
 
   var columns = [
     {
-      dataField: "dbId",
-      text: "",
-      hidden: true,
+      field: "db_id",
+      headerName: "",
+      hide: true,
     },
     {
-      dataField: "id",
-      text: "#",
+      field: "id",
+      headerName: "#",
+      sortable: false,
+      width: 40,
+      minWidth: 10,
+      maxWidth: 40,
     },
     {
-      dataField: "name",
-      text: "Name",
+      field: "name",
+      headerName: "Name",
+      width: 200,
+      sortable: false,
     },
   ];
 
   if (days.length) {
-    // console.log('days', days)
-    // columns.push(...days);
-    // console.log('columns', columns)
+    columns.push(...days);
   }
 
-  function onChange(oldValue, newValue, row, column){
-    console.log('SAVE:::', newValue)
+  function marksColor(params) {
+    if (
+      params.field === "name" ||
+      params.field === "id" ||
+      params.value == null
+    ) {
+      return "";
+    }
+
+    if (params.value >= 4) {
+      return "top";
+    }
+    if (params.value == 3) {
+      return "middle";
+    }
+    if (params.value <= 2) {
+      return "bad";
+    }
+    if (params.value === "N") {
+      return "missed";
+    }
   }
 
-  return (
-    <Container>
+  return isLoading ? (
+    <CircularProgress
+      color="primary"
+      size={60}
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "48%",
+      }}
+    />
+  ) : (
+    <Box
+      sx={{
+        height: 600,
+        "& .top": {
+          backgroundColor: "lightgreen",
+          borderRadius: "10px",
+        },
+        "& .middle": {
+          backgroundColor: "bisque",
+          borderRadius: "10px",
+        },
+        "& .bad": {
+          backgroundColor: "orangered",
+          borderRadius: "10px",
+        },
+        "& .missed": {
+          backgroundColor: "darkgrey",
+          borderRadius: "10px",
+        },
+        "& .today": {
+          border: "5px solid lightblue",
+          borderRadius: "10px",
+        },
+      }}
+    >
       <div style={{ textAlign: "center" }}>
-        <h1> {activeLesson.name}</h1>
-        <p>{new Date(activeLesson.date).toDateString()}</p>
+        <h1>
+          {activeLesson.name}, {activeLesson.group}
+        </h1>
+        <p>
+          {new Date(activeLesson.date).toLocaleDateString("en-us", dateFormat)}
+        </p>
       </div>
-
-      {/* <BootstrapTable
-        striped
-        hover
-        condensed
-        size="sm"
-        // bootstrap4
-        noDataIndication="Table is Empty"
-        keyField="id"
-        data={activeLesson.students}
+      <DataGrid
+        rows={activeLesson.students}
         columns={columns}
-        cellEdit={ cellEditFactory({ mode: 'click' }) }
-        // cellEdit={cellEditFactory({
-          // blurToSave: true,
-          // mode: "click",
-          // onStartEdit: (row, column, rowIndex, columnIndex) => { console.log('start to edit!!!'); },
-          // beforeSaveCell: (oldValue, newValue, row, column) => { console.log('Before Saving Cell!!'); },
-          // afterSaveCell: (oldValue, newValue, row, column) => {onChange(oldValue, newValue, row, column)},
-        // })}
-      /> */}
-    </Container>
+        hideFooter
+        disableColumnMenu
+        getRowId={(row) => row.db_id}
+        rowHeight={40}
+        experimentalFeatures={{ newEditingApi: true }}
+        getCellClassName={marksColor}
+      />
+    </Box>
   );
 }
 

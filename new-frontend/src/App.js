@@ -13,6 +13,7 @@ import "./App.css";
 // import UserDashboard from "./components/user/UserDashboard";
 import UserTimeTable from "./Components/User/Timetable/UserTimeTable.comp";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute.comp";
+import LessonForm from "./Components/User/Lesson/LessonForm.comp";
 
 function App() {
   console.log("INIT APP");
@@ -33,6 +34,7 @@ function App() {
                 {/* <Route path="profile" element={<UserProfile />} /> */}
               {/* </Route> */}
               <Route path="timetable" element={<UserTimeTable />} />
+              <Route path="lessons/:lessonId" element={<LessonForm />} />
               {/* <Route path="group/:groupId" element={<GroupForm />} /> */}
             </Route>
           </Route>

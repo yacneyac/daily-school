@@ -20,6 +20,8 @@ python-multipart = "^0.0.5"
 psycopg2-binary = "^2.9.3"
 ipdb = "^0.13.11"
 randomuser = "^1.6"
+mako = "^1.2.4"
+cryptography = "^39.0.0"
 
 [tool.poetry.dev-dependencies]
 

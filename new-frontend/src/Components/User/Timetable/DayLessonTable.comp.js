@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { GridActionsCellItem } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import { Link, useNavigate } from "react-router-dom";
 
-import BasicTable from "./BaseTable.comp";
-import RemoveLessonModal from "../User/Lesson/RemoveLesssonModal.comp";
+// import BasicTable from "./BaseTable.comp";
+import RemoveLessonModal from "../Lesson/RemoveLesssonModal.comp";
 
-
-export default function DashboardTable(props) {
+export default function DayLessonTable(props) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [removeLessonId, setRemoveLessonId] = useState(null);
 
@@ -16,6 +16,11 @@ export default function DashboardTable(props) {
     return <Link to={`/groups/${params.row.groupId}`}>{params.row.group}</Link>;
     // `${params.row.firstName || ''} ${params.row.lastName || ''}`;
   }
+  const handleRowDBClick = (params) => {
+    console.log("handleRowClick", params.row.db_id);
+    // setMessage(`Movie "${params.row.title}" clicked`);
+    navigate("/lessons/" + params.row.db_id);
+  };
 
   const deleteLesson = useCallback(
     (id) => () => {
@@ -38,7 +43,7 @@ export default function DashboardTable(props) {
         />,
       ],
     },
-    { field: "dbId", headerName: "", hide: true },
+    { field: "db_id", headerName: "", hide: true },
     {
       field: "id",
       flex: 0.2,
@@ -77,7 +82,20 @@ export default function DashboardTable(props) {
 
   return (
     <>
-      <BasicTable rows={props.rows} columns={columns} />
+      <div style={{ display: "flex", height: "100%" }}>
+        <div style={{ flexGrow: 1 }}>
+          <DataGrid
+            rows={props.rows}
+            columns={columns}
+            hideFooter
+            disableColumnMenu
+            autoHeight
+            getRowId={(row) => row.db_id}
+            rowHeight={35}
+            onRowDoubleClick={handleRowDBClick}
+          />
+        </div>
+      </div>
       <RemoveLessonModal
         open={open}
         handleClose={() => setOpen(false)}

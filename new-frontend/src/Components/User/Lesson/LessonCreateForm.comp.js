@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { addLesson } from "./LessonAction";
 import { lessonInit } from "./LessonSlice";
-import BaseSelect from "../../tableForm/BaseSelect.comp";
+import BaseSelect from "../../BaseComp/BaseSelect.comp";
 
 const LessonCreateForm = (props) => {
   const { parameters, activeWeekNumber } = useSelector(
@@ -38,7 +38,6 @@ const LessonCreateForm = (props) => {
       window.location.reload();
     }
   }, [lessonState.created]);
-
 
   function onChange(el) {
     var { name, value } = el.target;

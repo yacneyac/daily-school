@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,8 +14,6 @@ import { loginSuccess } from "../Components/Login/LoginSlice";
 
 
 export const Header = () => {
-
-
   const { isAuth } = useSelector((state) => state.login);
   const { user } = useSelector((state) => state.user);
   const accessToken = sessionStorage.getItem("accessToken");
@@ -34,7 +31,7 @@ export const Header = () => {
 
   return (
     <AppBar position="sticky">
-      <Container maxWidth="xl">
+      <Container style={{ maxWidth: "1550px"}}>
         <Toolbar disableGutters>
           <SchoolIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography

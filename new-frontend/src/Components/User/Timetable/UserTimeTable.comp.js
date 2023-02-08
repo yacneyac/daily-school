@@ -1,78 +1,35 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-  Grid,
-  Pagination,
-} from "@mui/material";
-
-import DashboardTable from "../../tableForm/DashboardTable";
-import { fetchTimeTable } from "./UserTimeTableAction";
+import { Button, CircularProgress, Grid, Pagination } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+
+import { fetchTimeTable } from "./UserTimeTableAction";
 import LessonCreateModal from "../Lesson/LessonCreateModal.comp";
 import { lessonInit } from "../Lesson/LessonSlice";
-// import BasicTable from "../../tableForm/DashboardTable";
-// import { Button, Container, Row } from "react-bootstrap";
-// import { PaginationControl } from "react-bootstrap-pagination-control";
-// import { useDispatch, useSelector } from "react-redux";
-// import TimeTableCard from "../../timetable/timeTableCard.comp";
-// import { fetchTimeTable } from "../../timetable/timeTableAction";
-// import CreateLessonModal from "../../lesson/CreateLessonModal.comp";
+import DayCard from "./DayCard.comp";
 
-// const Item = styled(Paper)(({ theme }) => ({
-//     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-//     ...theme.typography.body2,
-//     padding: theme.spacing(2),
-//     textAlign: 'center',
-//     color: theme.palette.text.secondary,
-//   }));
 
 const UserTimeTable = () => {
-  const [modalShow, setModalShow] = useState(false);
+  const [modalLessonShow, setModalLessonShow] = useState(false);
   const [page, setPage] = useState(null);
   const { user } = useSelector((state) => state.user);
-  const { lesson } = useSelector((state) => state);
   const dispatch = useDispatch();
   const timeTableState = useSelector((state) => state.timeTable);
   const accessToken = sessionStorage.getItem("accessToken");
-
-  const dateFormat = { month: "long", day: "numeric", year: "numeric" };
-  const today = new Date().toISOString().split("T")[0];
-  const styles = {
-    today: {
-      textAlign: "center",
-      backgroundColor: "#e3ffe4",
-    },
-    day: {
-      textAlign: "center",
-    },
-  };
 
   useEffect(() => {
     if (user.id && accessToken) {
       console.log("UserTimeTable useEffect fetchTimeTable");
       dispatch(fetchTimeTable(timeTableState.activeWeekNumber));
     }
-
-    // dispatch(lessonInit());
-    // setPage(timeTableState.activeWeekNumber);
-  }, [user.id, dispatch]); // [user.id, lesson.deleted, dispatch])
-
-  // useEffect(() => {
-  // setPage(activeWeekNumber);
-  // }, [activeWeekNumber, dispatch]);
+  }, [user.id, dispatch]);
 
   function onChangePage(e, page) {
     setPage(page);
     dispatch(fetchTimeTable(page));
   }
 
-  function onCloseModal() {
-    setModalShow(false);
+  function onCloseLessonModal() {
+    setModalLessonShow(false);
     dispatch(lessonInit());
   }
 
@@ -81,7 +38,7 @@ const UserTimeTable = () => {
       <Grid
         display="flex"
         justifyContent="center"
-        style={{ paddingBottom: "20px" }}
+        style={{ marginBottom: "20px" }}
       >
         <Pagination
           disabled={timeTableState.isLoading}
@@ -107,18 +64,20 @@ const UserTimeTable = () => {
           disabled={timeTableState.isLoading}
           variant="outlined"
           style={{ marginLeft: "20px" }}
-          // style={{ marginBottom: "16px" }}
-          onClick={() => setModalShow(true)}
+          onClick={() => setModalLessonShow(true)}
         >
           Create a lesson
         </Button>
-        <LessonCreateModal open={modalShow} handleClose={onCloseModal} />
+        <LessonCreateModal
+          open={modalLessonShow}
+          handleClose={onCloseLessonModal}
+        />
       </Grid>
       <hr />
 
       {timeTableState.isLoading ? (
         <CircularProgress
-          color="success"
+          color="primary"
           size={60}
           sx={{
             position: "absolute",
@@ -137,50 +96,22 @@ const UserTimeTable = () => {
               {Array.from(["Monday", "Tuesday", "Wednesday"]).map(
                 (day, index) => (
                   <Grid item xs={2} sm={4} md={4} key={index}>
-                    <Card
-                      style={
-                        timeTableState.week[day].date === today
-                          ? styles.today
-                          : styles.day
-                      }
-                    >
-                      <CardHeader
-                        title={day}
-                        subheader={new Date(
-                          timeTableState.week[day].date
-                        ).toLocaleDateString("en-us", dateFormat)}
-                      />
-                      <CardContent>
-                        <DashboardTable
-                          rows={timeTableState.week[day].lessons}
-                        />
-                      </CardContent>
-                    </Card>
+                    <DayCard
+                      date={timeTableState.week[day].date}
+                      day={day}
+                      lessons={timeTableState.week[day].lessons}
+                    />
                   </Grid>
                 )
               )}
               {Array.from(["Thursday", "Friday", "Saturday"]).map(
                 (day, index) => (
                   <Grid item xs={2} sm={4} md={4} key={index}>
-                    <Card
-                      style={
-                        timeTableState.week[day].date === today
-                          ? styles.today
-                          : styles.day
-                      }
-                    >
-                      <CardHeader
-                        title={day}
-                        subheader={new Date(
-                          timeTableState.week[day].date
-                        ).toLocaleDateString("en-us", dateFormat)}
-                      />
-                      <CardContent>
-                        <DashboardTable
-                          rows={timeTableState.week[day].lessons}
-                        />
-                      </CardContent>
-                    </Card>
+                    <DayCard
+                      date={timeTableState.week[day].date}
+                      day={day}
+                      lessons={timeTableState.week[day].lessons}
+                    />
                   </Grid>
                 )
               )}

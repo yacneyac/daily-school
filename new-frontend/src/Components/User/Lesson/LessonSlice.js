@@ -7,6 +7,7 @@ const initialState = {
   activeLesson: {
     name: "",
     date: "",
+    group: "",
     students: []
   },
   error: "",
@@ -41,7 +42,6 @@ const lessonSlice = createSlice({
     lessonInit: (state) => {
       state.created = false;
       state.deleted = false;
-      // state.activeLesson = {};
       state.error = "";
       state.isLoading = false;
     },
