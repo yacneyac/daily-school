@@ -16,8 +16,8 @@ TODO
   * FastAPI
   * SQLAlchemy
   * PostgresDB
-  * ReactJS==18.2
-  * bootstrap==5.2
+  * ReactJS
+  * Material UI
 
 ## Install
 TODO
