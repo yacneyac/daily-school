@@ -17,6 +17,7 @@ TODO
   * SQLAlchemy
   * PostgresDB
   * ReactJS
+  * Redux Toolkit
   * Material UI
 
 ## Install
