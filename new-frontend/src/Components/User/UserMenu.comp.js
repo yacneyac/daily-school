@@ -120,13 +120,21 @@ export default function UserMenu() {
             <Settings /> {setting[0]}
           </MenuItem>
         ))} */}
+        <MenuItem
+          id="settings"
+          name="settings"
+          onClick={handleCloseUserMenu}
+        >
+          <ListItemIcon>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Settings</ListItemText>
+        </MenuItem>
 
         <MenuItem
           id="timetable"
           name="timetable"
           onClick={handleCloseUserMenu}
-          // component={Link}
-          // href="timetable"
         >
           <ListItemIcon>
             <CalendarViewMonthOutlinedIcon fontSize="small" />

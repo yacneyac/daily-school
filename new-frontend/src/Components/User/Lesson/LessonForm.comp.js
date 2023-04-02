@@ -1,6 +1,10 @@
-import React, { useEffect } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import { Box, CircularProgress, Grid, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -8,14 +12,19 @@ import { fetchLesson } from "./LessonAction";
 import renderSelectEditInputCell from "./SelectEditMarks.comp";
 
 
-// TODO: get Sanday like free day 
-function generateDaysRange(year, month) {
+// TODO: make Sunday like free day
+function generateDaysRange(lessonDate) {
   let arr = [];
-  const lastDay = new Date(year, month, 0).getDate();
+  const lastDay = new Date(
+    lessonDate.getFullYear(),
+    lessonDate.getMonth() + 1,
+    0
+  ).getDate();
   const today = new Date().getDate();
 
   for (let day = 1; day <= lastDay; day += 1) {
     let headerClass = "";
+
     if (day === today) {
       headerClass = "today";
     }
@@ -35,22 +44,27 @@ function generateDaysRange(year, month) {
   return arr;
 }
 
+
 function LessonForm() {
   console.log("LessonForm");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { isLoading, activeLesson } = useSelector((state) => state.lesson);
   const { lessonId } = useParams();
+  const [value, setValue] = useState();
 
   useEffect(() => {
     if (user.id) {
-      console.log("LessonForm useEffect ");
       dispatch(fetchLesson({ lessonID: lessonId, teacherID: user.id }));
     }
   }, [user.id, dispatch]);
 
-  const dateParts = activeLesson.date.split("-");
-  const days = generateDaysRange(dateParts[0], dateParts[1]);
+  useEffect(() => {
+    if (activeLesson.date !== "") setValue(dayjs(activeLesson.date));
+  }, [activeLesson.date]);
+
+
+  const days = generateDaysRange(new Date(activeLesson.date));
   const dateFormat = { month: "long", day: "numeric", year: "numeric" };
 
   var columns = [
@@ -83,7 +97,8 @@ function LessonForm() {
     if (
       params.field === "name" ||
       params.field === "id" ||
-      params.value == null
+      params.value == null ||
+      params.value == 0
     ) {
       return "";
     }
@@ -100,6 +115,21 @@ function LessonForm() {
     if (params.value === "N") {
       return "missed";
     }
+  }
+  // TODO: get stydents' mark by date
+  function changeDateHandler(newValue) {
+    setValue(newValue);
+    const newDate = new Date(newValue);
+    const data = {
+      subject_id: activeLesson.db_id,
+      dateStart:
+        new Date(newDate.getFullYear(), newDate.getMonth()).getTime() / 1000,
+      dateEnd:
+        new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0).getTime() /
+        1000,
+    };
+
+    console.log(data);
   }
 
   return isLoading ? (
@@ -133,19 +163,42 @@ function LessonForm() {
           borderRadius: "10px",
         },
         "& .today": {
-          border: "5px solid lightblue",
+          backgroundColor: "lightblue",
           borderRadius: "10px",
         },
       }}
     >
-      <div style={{ textAlign: "center" }}>
-        <h1>
-          {activeLesson.name}, {activeLesson.group}
-        </h1>
-        <p>
-          {new Date(activeLesson.date).toLocaleDateString("en-us", dateFormat)}
-        </p>
-      </div>
+      <Grid container spacing={12}>
+        <Grid item xs={9} style={{ textAlign: "center", paddingLeft: "300px" }}>
+          <h1>
+            {activeLesson.name}, {activeLesson.group}
+          </h1>
+          <p>
+            {new Date(activeLesson.date).toLocaleDateString(
+              "en-us",
+              dateFormat
+            )}
+          </p>
+        </Grid>
+        <Grid item xs={3} style={{ paddingTop: "120px" }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              views={["year", "month"]}
+              label="Year and Month"
+              minDate={dayjs("2020-06-01")}
+              maxDate={dayjs("2023-06-01")}
+              value={value}
+              onChange={(newValue) => {
+                changeDateHandler(newValue);
+              }}
+              renderInput={(params) => (
+                <TextField {...params} helperText={null} />
+              )}
+            />
+          </LocalizationProvider>
+        </Grid>
+      </Grid>
+
       <DataGrid
         rows={activeLesson.students}
         columns={columns}

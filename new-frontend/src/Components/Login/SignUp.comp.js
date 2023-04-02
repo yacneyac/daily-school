@@ -28,7 +28,7 @@ export default function SignUp() {
         <hr />
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
-            margin="nodensermal"
+            margin="dense"
             size="small"
             autoComplete="given-name"
             name="firstName"

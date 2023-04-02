@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, CircularProgress, Grid, Pagination } from "@mui/material";
+import { Button, Grid, Pagination } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchTimeTable } from "./UserTimeTableAction";
 import LessonCreateModal from "../Lesson/LessonCreateModal.comp";
 import { lessonInit } from "../Lesson/LessonSlice";
 import DayCard from "./DayCard.comp";
-
+import { BaseProgress } from "../../BaseComp/BaseProgress.comp";
 
 const UserTimeTable = () => {
   const [modalLessonShow, setModalLessonShow] = useState(false);
-  const [page, setPage] = useState(null);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const timeTableState = useSelector((state) => state.timeTable);
@@ -21,10 +20,9 @@ const UserTimeTable = () => {
       console.log("UserTimeTable useEffect fetchTimeTable");
       dispatch(fetchTimeTable(timeTableState.activeWeekNumber));
     }
-  }, [user.id, dispatch]);
+  }, [user.id, accessToken, dispatch]);
 
   function onChangePage(e, page) {
-    setPage(page);
     dispatch(fetchTimeTable(page));
   }
 
@@ -76,15 +74,7 @@ const UserTimeTable = () => {
       <hr />
 
       {timeTableState.isLoading ? (
-        <CircularProgress
-          color="primary"
-          size={60}
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "48%",
-          }}
-        />
+        <BaseProgress />
       ) : (
         <>
           {Object.keys(timeTableState.week).length !== 0 && (

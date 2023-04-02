@@ -10,7 +10,9 @@ class CRUDStudentMark(CRUDBase[models.StudentMarks, StudentMarkCreate, StudentMa
 
     def create(self, db: Session, obj_in: StudentMarkCreate) -> int:
 
-        mark = db.query(self.model).\
+        mark = db.query(self.model). \
+            join(models.Student, models.Student.id == self.model.student_id). \
+            join(models.Subject, models.Subject.id == self.model.subject_id). \
             filter(
                 models.Student.id == obj_in.student_id,
                 models.Subject.id == obj_in.subject_id,

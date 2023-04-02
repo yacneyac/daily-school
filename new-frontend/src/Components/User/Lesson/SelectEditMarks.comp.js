@@ -12,32 +12,39 @@ const SelectEditInputCell = (props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeLesson } = useSelector((state) => state.lesson);
+  const lessonDate = new Date(activeLesson.date);
 
-  console.log("SelectEditInputCell:::1", { id, field, value });
+
 
   const handleChange = async (event) => {
-    console.log("handleChange:::2", { id, field, value: event.target.value });
+    let mark = event.target.value;
+    if (event.target.value === "0") {
+      mark = "";
+    }
+
     await apiRef.current.setEditCellValue({
       id,
       field,
-      value: event.target.value,
+      value: mark,
     });
     apiRef.current.stopCellEditMode({ id, field });
 
-    const dateParts = activeLesson.date.split("-");
-
-    // let day = field;
-    // if (field.length === 1) {
-    //   day = "0" + day;
+    // let mark = event.target.value;
+    // if (event.target.value === "0") {
+    //   mark = "";
     // }
-
     dispatch(
       addMark({
         teacher_id: user.id,
         student_id: id,
         subject_id: activeLesson.db_id,
-        mark: event.target.value,
-        date: new Date(dateParts[0], dateParts[1] - 1, field).getTime() / 1000,
+        mark: mark,
+        date:
+          new Date(
+            lessonDate.getFullYear(),
+            lessonDate.getMonth(),
+            field
+          ).getTime() / 1000,
         day: field,
       })
     );
@@ -46,7 +53,7 @@ const SelectEditInputCell = (props) => {
   //TODO: get from server
   return (
     <Select value={mark} onChange={handleChange} autoWidth>
-      <MenuItem value="">
+      <MenuItem value="0">
         <em>None</em>
       </MenuItem>
       <MenuItem value="1">1</MenuItem>
