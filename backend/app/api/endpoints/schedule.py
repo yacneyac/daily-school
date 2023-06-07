@@ -81,7 +81,7 @@ async def get_schedule(week_number: Optional[int] = None, db: Session = deps.db_
 
 
 @router.get('/parameters', dependencies=[deps.current_user])
-def get_schedule_parameters(db: Session = deps.db_session):
+async def get_schedule_parameters(db: Session = deps.db_session):
     """ Get all parameters for creating schedule """
     return {
         'room': crud.room.get_multi(db),

@@ -4,7 +4,6 @@ from pydantic import AnyHttpUrl, BaseSettings, EmailStr, validator
 from typing import List, Optional, Union
 
 
-# Project Directories
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 

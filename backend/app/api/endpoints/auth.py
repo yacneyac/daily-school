@@ -57,22 +57,15 @@ async def refresh_token(token: str = Depends(deps.oauth2_scheme)):
     }
 
 
+# TODO: get general user, not teacher only
 @router.get('/user', response_model=Teacher)
-def read_users_me(current_user: Teacher = Depends(deps.get_current_teacher)):
+async def read_user(current_user: Teacher = Depends(deps.get_current_teacher)):
     return current_user
 
 
-# @router.get('/timetable')
-# def read_users_me(current_user: Teacher = Depends(deps.get_current_teacher)):
-#     return {
-#         'history': 'history',
-#         'info': 'info',
-#         'nextLesson': 'next lesson'
-#     }
-
 
 @router.delete('/logout')
-def read_users_me(current_user: Teacher = Depends(deps.get_current_teacher)):
+async def user_logout(current_user: Teacher = Depends(deps.get_current_teacher)):
 
     print('DELETED info')
     return 'OK'
