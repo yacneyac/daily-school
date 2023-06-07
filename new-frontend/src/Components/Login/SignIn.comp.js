@@ -64,7 +64,7 @@ export default function SignIn() {
         {(loginState.error || userState.error) && (
           <Alert severity="error"> {loginState.error} </Alert>
         )}
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <TextField
             margin="dense"
             size="small"
