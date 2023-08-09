@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Paper } from "@mui/material";
 
+// TODO: validate passwords, add progress
+
 export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,8 +23,8 @@ export default function SignUp() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} style={{ padding: "15px" }}>
-        <Typography component="h1" variant="h5" style={{ textAlign: "center" }}>
+      <Paper elevation={3} className="PaperLogin">
+        <Typography variant="h5">
           Sign up
         </Typography>
         <hr />

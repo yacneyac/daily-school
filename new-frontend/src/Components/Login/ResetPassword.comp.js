@@ -9,6 +9,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Paper } from "@mui/material";
 
+
+// TODO: validate passwords, add progress
+
 export default function ResetPassword() {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,8 +24,8 @@ export default function ResetPassword() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} style={{ padding: "15px" }}>
-        <Typography variant="h5" align="center">
+      <Paper elevation={3} className="PaperLogin">
+        <Typography variant="h5">
           Reset your password
         </Typography>
         <hr />
@@ -54,7 +57,7 @@ export default function ResetPassword() {
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signin" variant="body2">
-                {"Already have an account? Sign in"}
+                Already have an account? Sign in
               </Link>
             </Grid>
           </Grid>

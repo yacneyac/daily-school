@@ -11,7 +11,6 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-import { green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -56,8 +55,8 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} style={{ padding: "15px" }}>
-        <Typography variant="h5" align="center">
+      <Paper elevation={3} className="PaperLogin">
+        <Typography variant="h5">
           Sign in to DailySchool
         </Typography>
         <hr />
@@ -113,12 +112,8 @@ export default function SignIn() {
             <CircularProgress
               size={24}
               sx={{
-                color: green[500],
                 position: "absolute",
-                top: "40%",
-                left: "50%",
-                marginTop: "-12px",
-                marginLeft: "-12px",
+                left: "49%"
               }}
             />
           )}

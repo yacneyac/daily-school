@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.PaperLogin {
+  padding: 1rem;
+}
+
+.PaperLogin h5 {
+  text-align: center;
+}
