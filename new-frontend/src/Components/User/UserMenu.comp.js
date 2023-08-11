@@ -42,8 +42,7 @@ export default function UserMenu() {
 
   const handleCloseUserMenu = (e) => {
     setAnchorElUser(null);
-     if (e.currentTarget.id)
-      navigate(e.currentTarget.id);
+    if (e.currentTarget.id) navigate(e.currentTarget.id);
   };
 
   const logMeOut = () => {
@@ -120,27 +119,20 @@ export default function UserMenu() {
             <Settings /> {setting[0]}
           </MenuItem>
         ))} */}
-        <MenuItem
-          id="settings"
-          name="settings"
-          onClick={handleCloseUserMenu}
-        >
+        <MenuItem id="settings" name="settings" onClick={handleCloseUserMenu}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           <ListItemText>Settings</ListItemText>
         </MenuItem>
 
-        <MenuItem
-          id="timetable"
-          name="timetable"
-          onClick={handleCloseUserMenu}
-        >
+        <MenuItem id="timetable" name="timetable" onClick={handleCloseUserMenu}>
           <ListItemIcon>
             <CalendarViewMonthOutlinedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Timetable</ListItemText>
         </MenuItem>
+
         <Divider />
         <MenuItem onClick={logMeOut}>
           <ListItemIcon>

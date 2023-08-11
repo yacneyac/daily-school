@@ -22,7 +22,7 @@ export default function SignUp() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" className="ContainerLogin">
       <Paper elevation={3} className="PaperLogin">
         <Typography variant="h5">
           Sign up

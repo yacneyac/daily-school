@@ -4,7 +4,7 @@ function News() {
   console.log('Load News')
     return (
       <>
-        <main>
+        <main className="MainContent">
           <h2>News</h2>
         </main>
       </>

@@ -14,8 +14,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { loginSuccess, loginPending, loginFail } from "./LoginSlice";
-import AuthService from "../../Services/auth.service";
+import { loginSuccess } from "./LoginSlice";
+import { loginUser } from "./LoginAction";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -39,26 +39,13 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    dispatch(loginPending());
-
-    try {
-      await AuthService.login(data.get("email"), data.get("password"));
-
-      dispatch(loginSuccess());
-      navigate("/timetable");
-    } catch (error) {
-      console.log("LOGIN FORM ERROR: ", error);
-
-      dispatch(loginFail(error.message));
-    }
+    dispatch(loginUser(data.get("email"), data.get("password")));
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" className="ContainerLogin">
       <Paper elevation={3} className="PaperLogin">
-        <Typography variant="h5">
-          Sign in to DailySchool
-        </Typography>
+        <Typography variant="h5">Sign in to DailySchool</Typography>
         <hr />
         {(loginState.error || userState.error) && (
           <Alert severity="error"> {loginState.error} </Alert>
@@ -113,7 +100,7 @@ export default function SignIn() {
               size={24}
               sx={{
                 position: "absolute",
-                left: "49%"
+                left: "49%",
               }}
             />
           )}

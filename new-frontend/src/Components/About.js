@@ -4,7 +4,7 @@ function About() {
   console.log('Load About')
     return (
       <>
-        <main>
+        <main className="MainContent">
           <h2>Who are we?</h2>
           <p>
             That feels like an existential question, don't you

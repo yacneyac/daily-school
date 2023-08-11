@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Pagination } from "@mui/material";
+import { Box, Button, Grid, Pagination } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchTimeTable } from "./UserTimeTableAction";
@@ -32,7 +32,7 @@ const UserTimeTable = () => {
   }
 
   return (
-    <>
+    <main style={{ margin: "20px" }}>
       <Grid
         display="flex"
         justifyContent="center"
@@ -71,12 +71,13 @@ const UserTimeTable = () => {
           handleClose={onCloseLessonModal}
         />
       </Grid>
+
       <hr />
 
       {timeTableState.isLoading ? (
         <BaseProgress />
       ) : (
-        <>
+        <Box>
           {Object.keys(timeTableState.week).length !== 0 && (
             <Grid
               container
@@ -85,7 +86,7 @@ const UserTimeTable = () => {
             >
               {Array.from(["Monday", "Tuesday", "Wednesday"]).map(
                 (day, index) => (
-                  <Grid item xs={2} sm={4} md={4} key={index}>
+                  <Grid item xs={3} sm={4} md={4} key={index}>
                     <DayCard
                       date={timeTableState.week[day].date}
                       day={day}
@@ -107,9 +108,9 @@ const UserTimeTable = () => {
               )}
             </Grid>
           )}
-        </>
+        </Box>
       )}
-    </>
+    </main>
   );
 };
 
