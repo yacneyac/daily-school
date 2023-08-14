@@ -39,6 +39,10 @@ code {
   font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
 
+.userProfileCard {
+  text-align: center;
+}
+
 /* .NavBtn {
   color: inherit;
 } */

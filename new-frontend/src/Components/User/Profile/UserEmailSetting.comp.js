@@ -10,7 +10,9 @@ const UserEmailSetting = () => {
   const { user } = useSelector((state) => state.user);
   const [email, setEmail] = useState(user.email);
 
-  function handleSubmit(e) {}
+  function handleSubmit(e) {
+
+  }
 
   return (
     <Box component="form" noValidate onSubmit={handleSubmit}>

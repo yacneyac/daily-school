@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, Container, Grid } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import UserPublicSettings from "./UserPublicSettings.comp";
 import UserEmailSetting from "./UserEmailSetting.comp";
@@ -25,10 +25,10 @@ const UserProfile = () => {
   return isLoading ? (
     <BaseProgress />
   ) : (
-    <Container style={{ maxWidth: "1300px" }}>
+    <Container>
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          <Card style={{ textAlign: "center" }}>
+          <Card className="userProfileCard">
             <CardHeader title="Public Settings" />
             <CardContent>
               <UserPublicSettings />
@@ -36,7 +36,7 @@ const UserProfile = () => {
           </Card>
         </Grid>
         <Grid item xs={4}>
-          <Card style={{ textAlign: "center" }}>
+          <Card className="userProfileCard">
             <CardHeader title="Email" />
             <CardContent>
               <UserEmailSetting />
@@ -44,7 +44,7 @@ const UserProfile = () => {
           </Card>
         </Grid>
         <Grid item xs={4}>
-          <Card style={{ textAlign: "center" }}>
+          <Card className="userProfileCard">
             <CardHeader title="Password" />
             <CardContent>
               <UserPasswordSetting />
