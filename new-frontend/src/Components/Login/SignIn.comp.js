@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Button,
@@ -11,14 +11,14 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { loginSuccess } from "./LoginSlice";
+// import { loginSuccess } from "./LoginSlice";
 import { loginUser } from "./LoginAction";
 
 export default function SignIn() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const loginState = useSelector((state) => state.login);
   const userState = useSelector((state) => state.user);
@@ -27,13 +27,13 @@ export default function SignIn() {
   const [email, setEmail] = useState("t@t.com");
   const [password, setPassword] = useState("pass");
 
-  useEffect(() => {
-    if (sessionStorage.getItem("accessToken")) {
-      loginSuccess();
-      console.log("accessToken is present! loginSuccess");
-      navigate("/timetable");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (sessionStorage.getItem("accessToken")) {
+  //     loginSuccess();
+  //     console.log("accessToken is present! loginSuccess");
+  //     navigate("/timetable");
+  //   }
+  // }, [navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

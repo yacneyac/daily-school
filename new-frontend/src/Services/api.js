@@ -11,14 +11,9 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   async (config) => {
-    // console.log("CONFIG request:", config);
     if (config.url === "/auth/signin") {
       return config;
     }
-
-    const accessToken = TokenService.getSessionAccessToken();
-
-    // const accessToken = sessionStorage.getItem("accessToken");
 
     if (config.url === "/auth/refresh-token") {
       config.headers["Authorization"] =
@@ -26,9 +21,10 @@ instance.interceptors.request.use(
       return config;
     }
 
+    const accessToken = TokenService.getSessionAccessToken();
+
     if (accessToken) {
-      config.headers["Authorization"] = "Bearer " + accessToken; // for Spring Boot back-end
-      //   config.headers["x-access-token"] = token; // for Node.js Express back-end
+      config.headers["Authorization"] = "Bearer " + accessToken;
 
       if (config.method === "post") {
         config.headers["Content-Type"] = "application/json";
@@ -51,18 +47,13 @@ instance.interceptors.response.use(
 
     const originalConfig = err.config;
     console.log("CONFIG err response ->", err.config);
-    // originalConfig._retry = false;
     const skippUrl = ["/auth/refresh-token", "/auth/signin"];
 
     if (!skippUrl.includes(originalConfig.url) && err.response) {
       // Access Token was expired
-
       // Incorrect username or password
 
       if (err.response.status === 401) {
-        // console.log('err.config.url ', err.config.url)
-        // console.log('origierr.confignalConfig.retry ', err.config["_retry"])
-        // err.config._retry = true;
 
         try {
           console.log("SEND REFRESH TOKEN");

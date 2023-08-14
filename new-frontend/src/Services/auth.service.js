@@ -1,16 +1,6 @@
 import api from "./api";
 import TokenService from "./token.service";
 
-const queryString = require("query-string");
-
-// const register = (username, email, password) => {
-//   return api.post("/auth/signup", {
-//     username,
-//     email,
-//     password,
-//   });
-// };
-
 async function login(email, password) {
   return api
     .post("/auth/signin", {
@@ -23,9 +13,6 @@ async function login(email, password) {
         TokenService.updateSessionAccessToken(accessToken);
         TokenService.updateLocalRefreshToken(refreshToken);
       }
-      // if (response.data.accessToken) {
-      //   TokenService.setUser(response.data);
-      // }
       return response.data;
     })
     .catch((err) => {
@@ -33,16 +20,8 @@ async function login(email, password) {
       //   console.log('ERR::::', err)
     });
 }
-// const logout = () => {
-//   TokenService.removeUser();
-// };
-// const getCurrentUser = () => {
-//   return JSON.parse(localStorage.getItem("user"));
-// };
+
 const AuthService = {
-  // register,
   login,
-  // logout,
-  // getCurrentUser,
 };
 export default AuthService;

@@ -1,11 +1,10 @@
 import api from "./api";
 
-async function getSchedule(week_id) {
-  if (week_id) {
-    week_id = "/" + week_id;
-  }
+async function getSchedule(weekID) {
+  if (weekID) weekID = `/${weekID}`;
+
   return api
-    .get("/schedule/weeks" + week_id)
+    .get(`/schedule/weeks${weekID}`)
     .then((response) => {
       return response.data;
     })
@@ -28,9 +27,8 @@ async function getScheduleParameters() {
 }
 
 async function createLesson(data) {
-  console.log("DATA>: ", JSON.stringify(data));
   return api
-    .post("/schedule/weeks/" + data.week_id + "/lessons", JSON.stringify(data))
+    .post(`/schedule/weeks/${data.week_id}/lessons`, JSON.stringify(data))
     .then((response) => {
       return response.data;
     })
@@ -40,9 +38,8 @@ async function createLesson(data) {
 }
 
 async function deleteLesson(data) {
-  console.log("deleteLesson DATA>: ", JSON.stringify(data));
   return api
-    .delete("/schedule/weeks/" + data.week_id + "/lessons/" + data.lesson_id)
+    .delete(`/schedule/weeks/${data.week_id}/lessons/` + data.lesson_id)
     .then((response) => {
       return response.data;
     })
@@ -51,12 +48,11 @@ async function deleteLesson(data) {
     });
 }
 
-
 // TODO: make service for teachers
 async function getLesson(data) {
   console.log("getLesson DATA>: ", JSON.stringify(data));
   return api
-    .get("/teachers/" + data.teacherID + "/lessons/" + data.lessonID)
+    .get(`/teachers/${data.teacherID}/lessons/${data.lessonID}`)
     .then((response) => {
       return response.data;
     })
@@ -69,7 +65,7 @@ async function addMark(data) {
   console.log("addMark DATA>: ", JSON.stringify(data));
   return api
     .post(
-      "/teachers/" + data.teacher_id + "/students/" + data.student_id + "/marks",
+      `/teachers/${data.teacher_id}/students/${data.student_id}/marks`,
       JSON.stringify(data)
     )
     .then((response) => {
@@ -84,7 +80,7 @@ async function updateMark(data) {
   console.log("updateMark DATA>: ", JSON.stringify(data));
   return api
     .put(
-      "/teachers/" + data.teacher_id + "/students/" + data.student_id + "/marks",
+      `/teachers/${data.teacher_id}/students/${data.student_id}/marks`,
       JSON.stringify(data)
     )
     .then((response) => {
@@ -102,6 +98,6 @@ const ScheduleService = {
   deleteLesson,
   getLesson,
   addMark,
-  updateMark
+  updateMark,
 };
 export default ScheduleService;
