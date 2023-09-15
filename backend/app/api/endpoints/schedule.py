@@ -50,7 +50,7 @@ async def remove_lesson(week_number: int, lesson_id: int, db: Session = deps.db_
 async def get_schedule(week_number: Optional[int] = None, db: Session = deps.db_session):
 
     # load today week
-    schedule = defaultdict(dict)
+    schedule = []
     if week_number is None:
         week_number = db.query(
             func.max(models.WeekNumber.number)
@@ -67,12 +67,13 @@ async def get_schedule(week_number: Optional[int] = None, db: Session = deps.db_
 
     for week_day in week_days:
         day_name = week_day.strftime("%A")
-        schedule[day_name] = {
+        schedule.append({
+            'name': day_name,
             'date': str(week_day.date()),
             'lessons': [lesson for lesson in week_schedule if lesson['day'] == day_name]
-        }
+        })
 
-    for day, param in schedule.items():
+    for param in schedule:
         for index, lesson in enumerate(param['lessons'], start=1):
             lesson['id'] = index
             del lesson['day']

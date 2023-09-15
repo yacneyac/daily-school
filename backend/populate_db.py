@@ -12,11 +12,13 @@ from app.models.week import Week
 from app.models.lesson_time import LessonTime
 from app.models.group import Group_
 from app.models.teacher import Teacher
+from app.db.base_class import Base
 
 from randomuser import RandomUser
 
 
 db = SessionLocal()
+
 for sub in ['Mathematics', 'English', 'Geography', 'Music', 'Physics', 'Biology', 'Chemistry', 'Literacy']:
     db_obj = Subject(
         name=sub,
